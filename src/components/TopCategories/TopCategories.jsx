@@ -21,7 +21,7 @@ const TopCategories = ({ title }) => {
     <div className="mt-20">
       <h2 className="flex justify-between text-2xl font-bold tracking-tight text-gray-900 mb-10">
         {title}
-        <Link to="/404">
+        <Link to="/White-page">
           <span
             className="text-base font-semibold cursor-pointer"
           >
