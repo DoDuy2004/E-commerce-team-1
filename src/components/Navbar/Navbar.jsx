@@ -29,7 +29,7 @@ const Navbar = () => {
     const fetchCategories = async () => {
       const data = await getCategories();
       setCategories(data);
-      console.log(data);
+      // console.log(data);
     };
     fetchCategories();
   }, []);
