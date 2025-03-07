@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import { BiCategory } from "react-icons/bi";
+import { useEffect } from "react";
+import { getCategories } from "../../services/categoryService";
 
 const Navbar = () => {
   const [isDropDown, setIsDropDown] = useState(false);
@@ -7,7 +9,8 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    
+    const data = getCategories();
+    console.log(data);
   }, [])
 
   return (
