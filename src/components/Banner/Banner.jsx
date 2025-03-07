@@ -55,7 +55,7 @@ const Banner = () => {
       >
         {ads.map((ad, index) => (
           <BannerItem
-            key={ad["-id"]}
+            key={index}
             index={index}
             image={ad.image}
             title={ad.title}
