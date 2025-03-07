@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import BannerItem from "./BannerItem";
 
+
 const Banner = () => {
   const [ads, setAds] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);

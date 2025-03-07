@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const Button = () => {
+export const Button = ({style, content, icon, clickEvent}) => {
   return (
-    <button className='bg-black text-white px-5 py-3 rounded-3xl cursor-pointer'>
-        See more product
+    <button className={style} onClick={clickEvent}>
+        {icon} {content}
     </button>
   )
 }

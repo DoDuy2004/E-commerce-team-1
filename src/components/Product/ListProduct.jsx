@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { productItem } from "../data";
 import { ProductCard } from "./ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-export const ListProduct = ({title, productList}) => {
+export const ListProduct = ({ title, productList }) => {
   const [isStart, setIsStart] = useState(true);
   const [isEnd, setIsEnd] = useState(true);
   const scrollRef = useRef(null);
@@ -30,14 +29,13 @@ export const ListProduct = ({title, productList}) => {
   };
 
   useEffect(() => {
-    checkScroll(); 
+    checkScroll();
     const ref = scrollRef.current;
-    console.log(ref)
+    console.log(ref);
     if (ref) {
       ref.addEventListener("scroll", checkScroll);
       return () => ref.removeEventListener("scroll", checkScroll);
     }
-    
   }, []);
 
   return (
@@ -79,7 +77,7 @@ export const ListProduct = ({title, productList}) => {
             {productList.map((product) => (
               <div
                 key={product.id}
-                className="w-[calc(100%/4.2)] flex-shrink-0"
+                className="flex-shrink-0 w-[calc(100%/1)] sm:w-[calc(100%/2.1)] md:w-[calc(100%/3.2)] lg:w-[calc(100%/4.2)]"
                 style={{ scrollSnapAlign: "start" }}
               >
                 <ProductCard product={product} />
@@ -91,7 +89,7 @@ export const ListProduct = ({title, productList}) => {
           {`
           .scrollbar-hide::-webkit-scrollbar {
             display: none;
-          }
+}
         `}
         </style>
       </div>
