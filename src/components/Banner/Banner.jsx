@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
-import { useState } from "react";
+
 
 const Banner = () => {
   const [ads, setAds] = useState([]);
