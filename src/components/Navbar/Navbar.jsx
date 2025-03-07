@@ -3,9 +3,39 @@ import { BiCategory } from "react-icons/bi";
 import { useEffect } from "react";
 import { getCategories } from "../../services/categoryService";
 
+const pages = [
+  {
+    title: "Home",
+    active: false,
+  },
+  {
+    title: "Today's Deals",
+    active: false,
+  },
+  {
+    title: "Customer Services",
+    active: false,
+  },
+  {
+    title: "Trending Products",
+    active: false,
+  },
+  {
+    title: "Blog",
+    active: false,
+  },
+  {
+    title: "Special Offers",
+    active: false,
+  },
+];
+
+console.log(pages);
+
 const Navbar = () => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [isActive, setIsActive] = useState(true);
   const dropdownRef = useRef(null);
 
   const handleDropDown = () => {
@@ -35,17 +65,17 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between relative mt-[5%]">
       <button
-        className="relative uppercase flex items-center gap-2 cursor-pointer"
+        className="uppercase flex items-center gap-2 cursor-pointer"
         ref={dropdownRef}
         onClick={handleDropDown}
       >
         <BiCategory /> Categories
         {isDropDown && (
           <ul
-            className="absolute top-[150%] left-0 bg-white text-black text-[14px] overflow-y-auto max-h-100 w-[800px] custom-scrollbar leading-10 z-10 shadow-md 
-                grid grid-cols-4 gap-2 p-2 normal-case text-start"
+            className="absolute top-[150%] left-0 bg-white text-black text-[14px] overflow-y-auto max-h-100 min-w-max max-w-[800px] custom-scrollbar leading-5 z-10 shadow-md 
+      grid grid-cols-4 gap-1 p-2 normal-case text-start"
           >
             {categories.length > 0 ? (
               categories.map((item) => (
@@ -66,12 +96,16 @@ const Navbar = () => {
         )}
       </button>
       <ul className="flex gap-10">
-        <li className="cursor-pointer font-bold">Home</li>
-        <li className="cursor-pointer">Today's Deals</li>
-        <li className="cursor-pointer">Customer Services</li>
-        <li className="cursor-pointer">Trending Products</li>
-        <li className="cursor-pointer">Blog</li>
-        <li className="cursor-pointer">Special Offers</li>
+        {pages &&
+          pages.map((item, index) => (
+              <li
+                key={index}
+              className={`cursor-pointer ${item.active && "font-bold"}`}
+              >
+                {item.title}
+              </li>
+            )
+          )}
       </ul>
     </div>
   );

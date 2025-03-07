@@ -80,9 +80,8 @@ const Banner = () => {
         <FaChevronRight className="text-white text-2xl" />
       </button>
 
-      {/* Dots chỉ báo */}
-      <div className="absolute bottom-5 left-[17%] transform -translate-x-1/2 flex gap-2">
-        {ads.map((_, index) => (
+      <div className="absolute bottom-10 left-[10%] transform flex gap-2">
+        {ads.slice(0,4).map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}

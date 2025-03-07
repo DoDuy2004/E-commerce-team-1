@@ -7,6 +7,7 @@ const Searchbar = () => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [categories, setCategories] = useState([]);
   const dropdownRef = useRef(null);
+  const [searchCategory, setSearchCategory] = useState('');
 
   const handleDropDown = () => {
     setIsDropDown((prev) => !prev);
@@ -43,7 +44,7 @@ const Searchbar = () => {
   return (
     <div className="flex w-4/6 h-10">
       <input
-        className="w-3/5 border border-r-0 border-[#e8e8e8] rounded-tl-md rounded-bl-md outline-none placeholder:text-[#c5c3c3] px-2"
+        className="w-4/6 border border-r-0 border-[#e8e8e8] rounded-tl-md rounded-bl-md outline-none placeholder:text-[#c5c3c3] px-2"
         type="text"
         placeholder="Search products"
       />
@@ -60,7 +61,7 @@ const Searchbar = () => {
           }`}
         />
         {isDropDown && (
-          <ul className="absolute top-full left-0 bg-white text-black text-[14px] overflow-y-auto max-h-40 w-[200px] custom-scrollbar leading-10 z-10 shadow">
+          <ul className="absolute top-full left-0 bg-white text-black text-[14px] overflow-y-auto max-h-40 w-[200px] custom-scrollbar leading-10 z-30 shadow">
             {categories.length > 0 ? (
               categories.map((item) => (
                 <li

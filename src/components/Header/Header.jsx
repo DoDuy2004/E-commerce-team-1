@@ -5,9 +5,9 @@ import UserMenu from "./UserMenu";
 
 const Header = () => {
   return (
-    <div className="flex w-full pb-4 gap-20 justify-center">
+    <div className="flex py-3 justify-between gap-20 fixed top-0 z-50 bg-white">
       <Logo />
-      <div className="w-5/6 flex items-center">
+      <div className="w-5/6 flex items-center gap-4">
         <Searchbar />
         <UserMenu />
       </div>

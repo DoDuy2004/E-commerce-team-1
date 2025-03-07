@@ -6,7 +6,7 @@ import { LuShoppingCart } from "react-icons/lu";
 
 const UserMenu = () => {
   return (
-    <div className="flex w-2/6 gap-12 justify-end items-center">
+    <div className="flex w-2/6 gap-10 items-center">
       <div className="flex items-center gap-2 cursor-pointer">
         <FaRegUser className="text-2xl" />
         <div className="flex flex-col gap-0">
@@ -19,7 +19,7 @@ const UserMenu = () => {
       </div>
       <div className="relative">
         <FaRegHeart className="text-2xl cursor-pointer" />
-        <span className="absolute top-0 right-[-10%] w-4 h-4 bg-[#e52947] text-[10px] text-white font-semibold rounded-full flex justify-center items-center">
+        <span className="absolute top-[-27%] right-[-40%] w-4 h-4 bg-[#e52947] text-[10px] text-white font-semibold rounded-full flex justify-center items-center">
           3
         </span>
       </div>
