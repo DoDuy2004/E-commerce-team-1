@@ -6,6 +6,7 @@ import BannerItem from "./BannerItem";
 const Banner = () => {
   const [ads, setAds] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  
 
   // Gọi API khi component mount
   useEffect(() => {
@@ -42,7 +43,7 @@ const Banner = () => {
   }, [ads]);
 
   if (!ads.length) {
-    return <div className="px-16 pt-5 h-[500px] ">No ads available</div>;
+    return <div className="px-16 pt-10 h-[500px] ">No ads available</div>;
   }
 
   return (
@@ -67,19 +68,19 @@ const Banner = () => {
       {/* Nút điều hướng */}
       <button
         onClick={prevSlide}
-        className="absolute left-20 top-1/2 transform -translate-y-1/2 bg-white/30 p-3 rounded-full hover:bg-white/50 transition-all"
+        className="absolute left-10 top-1/2 transform -translate-y-1/2 bg-white/30 p-3 rounded-full hover:bg-white/50 transition-all"
       >
         <FaChevronLeft className="text-white text-2xl" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-white/30 p-3 rounded-full hover:bg-white/50 transition-all"
+        className="absolute right-10 top-1/2 transform -translate-y-1/2 bg-white/30 p-3 rounded-full hover:bg-white/50 transition-all"
       >
         <FaChevronRight className="text-white text-2xl" />
       </button>
 
       {/* Dots chỉ báo */}
-      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-5 left-[17%] transform -translate-x-1/2 flex gap-2">
         {ads.map((_, index) => (
           <button
             key={index}
