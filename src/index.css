@@ -7,3 +7,7 @@
 .custom-scrollbar {
   scrollbar-width: none; /* Ẩn scrollbar trên Firefox */
 }
+
+#root {
+  padding: 0 4rem;
+}

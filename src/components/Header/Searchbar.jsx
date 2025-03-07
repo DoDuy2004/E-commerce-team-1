@@ -1,17 +1,18 @@
-import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
+import { getCategories } from "../../services/categoryService";
 
 const Searchbar = () => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [categories, setCategories] = useState([]);
-  const dropdownRef = useRef(null); // Added ref for dropdown
+  const dropdownRef = useRef(null);
 
   const handleDropDown = () => {
     setIsDropDown((prev) => !prev);
   };
 
+  // Xử lý click ngoài dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -25,17 +26,13 @@ const Searchbar = () => {
     };
   }, []);
 
-  const getCategory = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/categories");
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
   useEffect(() => {
-    getCategory();
+    const fetchCategories = async () => {
+      const data = await getCategories();
+      setCategories(data);
+      console.log(data);
+    };
+    fetchCategories();
   }, []);
 
   const handleCategorySelect = (category) => {
@@ -51,22 +48,32 @@ const Searchbar = () => {
         placeholder="Search products"
       />
       <div
-        ref={dropdownRef} // Attach ref to dropdown
+        ref={dropdownRef}
         className="relative w-1/5 flex justify-center items-center gap-1 border border-[#e8e8e8] text-[#c5c3c3] cursor-pointer"
         onClick={handleDropDown}
         aria-expanded={isDropDown}
       >
         <span>All categories</span>
         <IoIosArrowDown
-          className={`mt-1 transform transition-transform duration-300 ${isDropDown ? "rotate-180" : "rotate-0"}`}
+          className={`mt-1 transform transition-transform duration-300 ${
+            isDropDown ? "rotate-180" : "rotate-0"
+          }`}
         />
         {isDropDown && (
-          <ul className="absolute top-[100%] left-0 bg-white text-black text-[14px] overflow-y-auto h-50 w-[200px] custom-scrollbar leading-10 z-10 shadow">
-            {categories.map((item) => (
-              <li key={item["_id"]} className="hover:bg-[#e8e8e8] px-3" onClick={() => handleCategorySelect(item.name)}>
-                {item.name}
-              </li>
-            ))}
+          <ul className="absolute top-full left-0 bg-white text-black text-[14px] overflow-y-auto max-h-40 w-[200px] custom-scrollbar leading-10 z-10 shadow">
+            {categories.length > 0 ? (
+              categories.map((item) => (
+                <li
+                  key={item["_id"]}
+                  className="hover:bg-[#e8e8e8] px-3"
+                  onClick={() => handleCategorySelect(item.name)}
+                >
+                  {item.name}
+                </li>
+              ))
+            ) : (
+              <li className="px-3 text-gray-400">No categories found</li>
+            )}
           </ul>
         )}
       </div>
