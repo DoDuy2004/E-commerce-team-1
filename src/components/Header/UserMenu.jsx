@@ -17,15 +17,18 @@ const UserMenu = () => {
       <div>
         <RiMailSendLine className="text-2xl cursor-pointer" />
       </div>
-      <div>
+      <div className="relative">
         <FaRegHeart className="text-2xl cursor-pointer" />
+        <span className="absolute top-0 right-[-10%] w-4 h-4 bg-[#e52947] text-[10px] text-white font-semibold rounded-full flex justify-center items-center">
+          3
+        </span>
       </div>
-      <div className="flex items-center gap-2 cursor-pointer">
+      <div className="flex items-center gap-2 cursor-pointer relative ">
         <LuShoppingCart className="text-2xl" />
-        <div className="relative flex flex-col gap-0">
+        <div className="flex flex-col gap-0">
           <span className="text-[10px] text-[#8a8888]">Total</span>
           <h4 className="text-[15px] font-bold">$0.00</h4>
-          <span className="absolute right-[100%] w-4 h-4 bg-[#e52947] text-[10px] text-white font-semibold rounded-full flex justify-center items-center">
+          <span className="absolute right-[55%] w-4 h-4 bg-[#e52947] text-[10px] text-white font-semibold rounded-full flex justify-center items-center">
             3
           </span>
         </div>

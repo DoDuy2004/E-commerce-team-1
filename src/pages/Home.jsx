@@ -4,6 +4,7 @@ import { ListProduct } from "../components/Product/ListProduct";
 import { productItem } from "../data";
 import { Button } from "../components/Button";
 import Banner from "../components/Banner/Banner";
+import TopCategories from "../components/TopCategories/TopCategories";
 import { TopSelling } from "../components/Product/TopSelling";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +15,8 @@ export const Home = () => {
   }
   return (
     <div>
-      <Banner/>
+      <Banner />
+      <TopCategories title={"Our Top Categories"} />
       <ListProduct title={"Popular Products 2023"} productList={productItem} />
       <ListProduct title={"Furniture Collection"} productList={productItem} />
       <ListProduct title={"New Shoes Collection"} productList={productItem} />
