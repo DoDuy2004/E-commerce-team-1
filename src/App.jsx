@@ -13,11 +13,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <ScrollToTop />
-        <div className="px-16 py-5 border-b border-[#e8e8e8]">
-          <Header />
-          <Navbar />
-        </div>
+        <Header />
         <div className="px-16">
           <Routes>
             <Route path="/" element={<Home />}></Route>

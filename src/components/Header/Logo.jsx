@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Logo = () => {
   return (
-    <div className='w-1/6'><img className="block w-5/6 sm:w-5/6 md:w-3/6 lg:w-3/6" src="/images/logo.jpg" alt="Logo" /></div>
-  )
-}
+    <div className="flex items-center">
+      <Link to="/" className="flex items-center">
+        <img
+          className="h-12 w-auto"
+          src="/images/logo.jpg"
+          alt="ACCESSED Logo"
+        />
+      </Link>
+    </div>
+  );
+};
 
-export default Logo
+export default Logo;

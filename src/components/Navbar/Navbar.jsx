@@ -1,46 +1,21 @@
 import React, { useRef, useState } from "react";
 import { BiCategory } from "react-icons/bi";
 import { useEffect } from "react";
-import { getCategories } from "../../services/categoryService";
+import { Link } from "react-router-dom";
 
-const pages = [
-  {
-    title: "Home",
-    active: false,
-  },
-  {
-    title: "Today's Deals",
-    active: false,
-  },
-  {
-    title: "Customer Services",
-    active: false,
-  },
-  {
-    title: "Trending Products",
-    active: false,
-  },
-  {
-    title: "Blog",
-    active: false,
-  },
-  {
-    title: "Special Offers",
-    active: false,
-  },
+const navLinks = [
+  { name: "Home", href: "/white-page" },
+  { name: "Today's Deals", href: "/white-page" },
+  { name: "Customer Services", href: "/white-page" },
+  { name: "Trending Products", href: "/white-page" },
+  { name: "Blog", href: "/white-page" },
+  { name: "Special Offers", href: "/white-page" },
 ];
 
-console.log(pages);
-
-const Navbar = () => {
+const Navbar = ({ categories }) => {
   const [isDropDown, setIsDropDown] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState("Home");
   const dropdownRef = useRef(null);
-
-  const handleDropDown = () => {
-    setIsDropDown((prev) => !prev);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -55,59 +30,35 @@ const Navbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getCategories();
-      setCategories(data);
-      // console.log(data);
-    };
-    fetchCategories();
-  }, []);
-
   return (
-    <div className="flex justify-between relative mt-[5%]">
-      <button
-        className="uppercase flex items-center gap-2 cursor-pointer"
-        ref={dropdownRef}
-        onClick={handleDropDown}
-      >
-        <BiCategory /> Categories
-        {isDropDown && (
-          <ul
-            className="absolute top-[150%] left-0 bg-white text-black text-[14px] overflow-y-auto max-h-100 min-w-max max-w-[800px] custom-scrollbar leading-5 z-10 shadow-md 
-      grid grid-cols-4 gap-1 p-2 normal-case text-start"
-          >
-            {categories.length > 0 ? (
-              categories.map((item) => (
-                <li
-                  key={item["_id"]}
-                  className="hover:bg-[#e8e8e8] px-3 py-1"
-                  onClick={() => handleCategorySelect(item.name)}
+    <nav className="bg-white mt-20 ">
+      <div className="min-w-full mx-auto hidden px-16 lg:block">
+        <div className="flex items-center justify-between">
+          <div className="relative py-4">
+            <button className="flex items-center gap-2 font-bold text-gray-700 hover:text-gray-900">
+              <BiCategory className="h-5 w-5" />
+              CATEGORIES
+            </button>
+          </div>
+
+          <ul className="flex space-x-8">
+            {navLinks.map((link, index) => (
+              <li key={index}>
+                <Link
+                  to={link.href}
+                  className={` ${
+                    isActive === link.name ? "text-gray-900" : ""
+                  }  font-semibold block py-4 text-gray-500 hover:text-gray-900`}
+                  onClick={() => setIsActive((prev) => link.name)}
                 >
-                  {item.name}
-                </li>
-              ))
-            ) : (
-              <li className="px-3 text-gray-400 col-span-4">
-                No categories found
+                  {link.name}
+                </Link>
               </li>
-            )}
+            ))}
           </ul>
-        )}
-      </button>
-      <ul className="flex gap-10">
-        {pages &&
-          pages.map((item, index) => (
-              <li
-                key={index}
-              className={`cursor-pointer ${item.active && "font-bold"}`}
-              >
-                {item.title}
-              </li>
-            )
-          )}
-      </ul>
-    </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 
