@@ -14,9 +14,9 @@ export const ProductCard = ({ product }) => {
         nav(`/product-detail/${product.id}`);
       }}
     >
-      <div className="relative w-full h-80 bg-gray-100 rounded-lg shadow-md flex items-center justify-center object-cover hover:scale-95 hover:brightness-90 overflow-hidden">
+      <div className="relative w-full h-80 bg-gray-100 rounded-lg shadow-md flex items-center justify-center object-cover duration-300 ease-in hover:brightness-90 hover:scale-102 overflow-hidden">
         <button
-          className="absolute top-3 left-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition cursor-pointer"
+          className="absolute top-3 left-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
           onClick={(e) => {
             setLiked(!liked);
             e.stopPropagation();

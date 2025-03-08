@@ -7,11 +7,13 @@ import { Home } from "./pages/Home";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Footer } from "./components/Footer/Footer";
 import WhitePage from "./pages/WhitePage";
+import { ScrollToTop } from "./utils/ScrollToTop";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop />
         <div className="px-16 py-5 border-b border-[#e8e8e8]">
           <Header />
           <Navbar />
