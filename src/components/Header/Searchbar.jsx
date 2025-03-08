@@ -1,22 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { getCategories } from "../../services/categoryService";
+import { getProducts } from "../../services/productService";
 
-const Searchbar = () => {
+const Searchbar = ({ categories }) => {
   const [isDropDown, setIsDropDown] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [searchByProduct, setSearchByProduct] = useState("");
+  const [searchByCategoryID, setSearchByCategoryID] = useState("");
   const dropdownRef = useRef(null);
-  const [searchCategory, setSearchCategory] = useState('');
 
   const handleDropDown = () => {
     setIsDropDown((prev) => !prev);
   };
 
-  // Xử lý click ngoài dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (!dropdownRef.current.contains(event.target)) {
         setIsDropDown(false);
       }
     };
@@ -27,60 +29,63 @@ const Searchbar = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getCategories();
-      setCategories(data);
-      console.log(data);
-    };
-    fetchCategories();
-  }, []);
-
-  const handleCategorySelect = (category) => {
-    console.log("Selected category:", category);
-    setIsDropDown(false);
+  const handleSearchProduct = async () => {
+    const data = await getProducts(searchByProduct, searchByCategoryID);
+    setProducts(data);
+    // console.log(data);
   };
 
+  const handleCategorySelect = (category, categoryID) => {
+    setIsDropDown(false);
+    setSelectedCategory((prev) => category);
+    setSearchByCategoryID((prev) => categoryID);
+  };
+
+  // console.log(searchByProduct);
+
   return (
-    <div className="flex w-4/6 h-10">
-      <input
-        className="w-4/6 border border-r-0 border-[#e8e8e8] rounded-tl-md rounded-bl-md outline-none placeholder:text-[#c5c3c3] px-2"
-        type="text"
-        placeholder="Search products"
-      />
-      <div
-        ref={dropdownRef}
-        className="relative w-1/5 flex justify-center items-center gap-1 border border-[#e8e8e8] text-[#c5c3c3] cursor-pointer"
-        onClick={handleDropDown}
-        aria-expanded={isDropDown}
-      >
-        <span>All categories</span>
-        <IoIosArrowDown
-          className={`mt-1 transform transition-transform duration-300 ${
-            isDropDown ? "rotate-180" : "rotate-0"
-          }`}
+    <div className="order-3 mt-4 lg:order-2 lg:mt-0 lg:flex lg:w-[40%] xl:w-[50%]">
+      <div className="relative flex w-full">
+        <input
+          type="text"
+          placeholder="Search products"
+          className="w-full rounded-l-md border border-r-0 border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:outline-0"
+          onChange={(e) => setSearchByProduct(e.target.value)}
         />
-        {isDropDown && (
-          <ul className="absolute top-full left-0 bg-white text-black text-[14px] overflow-y-auto max-h-40 w-[200px] custom-scrollbar leading-10 z-30 shadow">
-            {categories.length > 0 ? (
-              categories.map((item) => (
+        <div
+          ref={dropdownRef}
+          className="relative w-1/3 flex items-center justify-center border border-l-1 border-gray-300 bg-white px-4 text-gray-500"
+          onClick={() => setIsDropDown(!isDropDown)}
+        >
+          <span className="w-full text-xs lg:text-base md:text-sm text-center">{selectedCategory}</span>
+          <IoIosArrowDown
+            className={`ml-2 h-4 w-4 transform transition-transform duration-300 ${
+              isDropDown ? "rotate-180" : "rotate-0"
+            }`}
+          />
+          {isDropDown && (
+            <ul className="absolute top-full left-0 z-10 mt-1 w-full lg:w-50 rounded-md bg-white py-1 shadow ring-opacity-5">
+              {categories && categories.length > 0 ? categories.map((category) => (
                 <li
-                  key={item["_id"]}
-                  className="hover:bg-[#e8e8e8] px-3"
-                  onClick={() => handleCategorySelect(item.name)}
+                  key={category._id}
+                  className="px-4 py-2 text-xs lg:text-base text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  onClick={() =>
+                    handleCategorySelect(category.name, category._id)
+                  }
                 >
-                  {item.name}
+                  {category.name}
                 </li>
-              ))
-            ) : (
-              <li className="px-3 text-gray-400">No categories found</li>
-            )}
-          </ul>
-        )}
+              )) : <li className="px-4 py-2 text-xs lg:text-base text-gray-700">There are currently no product categories</li> }
+            </ul>
+          )}
+        </div>
+        <button
+          onClick={handleSearchProduct}
+          className="rounded-r-md bg-black px-4 py-2 text-white focus:outline-0"
+        >
+          <IoSearch className="h-5 w-5" />
+        </button>
       </div>
-      <button className="min-w-15 rounded-br-md rounded-tr-md bg-black text-white flex justify-center items-center cursor-pointer">
-        <IoSearch className="text-2xl" />
-      </button>
     </div>
   );
 };
