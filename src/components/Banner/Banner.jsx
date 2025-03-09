@@ -75,7 +75,7 @@ const Banner = () => {
           {/* Nút điều hướng trái */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 md:left-10 top-1/2 transform -translate-y-1/2 bg-white/30 p-2 md:p-3 rounded-full hover:bg-white/50 transition-all"
+            className="absolute left-4 cursor-pointer md:left-10 top-1/2 transform -translate-y-1/2 bg-white/30 p-2 md:p-3 rounded-full hover:bg-white/50 transition-all"
           >
             <FaChevronLeft className="text-white text-lg md:text-2xl" />
           </button>
@@ -83,7 +83,7 @@ const Banner = () => {
           {/* Nút điều hướng phải */}
           <button
             onClick={nextSlide}
-            className="absolute right-4 md:right-10 top-1/2 transform -translate-y-1/2 bg-white/30 p-2 md:p-3 rounded-full hover:bg-white/50 transition-all"
+            className="absolute right-4 cursor-pointer md:right-10 top-1/2 transform -translate-y-1/2 bg-white/30 p-2 md:p-3 rounded-full hover:bg-white/50 transition-all"
           >
             <FaChevronRight className="text-white text-lg md:text-2xl" />
           </button>
@@ -94,7 +94,7 @@ const Banner = () => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full ${
+                className={`w-3 h-3 rounded-full cursor-pointer ${
                   currentIndex === index ? "bg-white" : "bg-white/50"
                 }`}
               />
