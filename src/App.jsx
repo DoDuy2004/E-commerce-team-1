@@ -8,6 +8,7 @@ import { ProductDetail } from "./pages/ProductDetail";
 import { Footer } from "./components/Footer/Footer";
 import WhitePage from "./pages/WhitePage";
 import { ScrollToTop } from "./utils/ScrollToTop";
+import SearchProducts from "./pages/SearchProducts";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <div className="px-16">
           <Routes>
             <Route path="/" element={<Home />}></Route>
+            <Route path="/search" element={<SearchProducts />}> </Route>
             <Route
               path="/product-detail/:id"
               element={<ProductDetail />}
