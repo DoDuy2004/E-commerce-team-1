@@ -15,7 +15,7 @@ const SearchProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const data = await getProducts(keyword, categoryID);
-      setProducts(data.products);
+      setProducts(data);
     };
 
     fetchProducts();

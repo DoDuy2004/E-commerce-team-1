@@ -147,7 +147,7 @@ const Searchbar = ({ categories }) => {
         </div>
         <button
           onClick={() => handleSearchProduct()}
-          className="rounded-r-md bg-black px-4 py-2 text-white focus:outline-0"
+          className="rounded-r-md bg-black px-4 py-2 cursor-pointer text-white focus:outline-0"
         >
           <IoSearch className="h-5 w-5" />
         </button>

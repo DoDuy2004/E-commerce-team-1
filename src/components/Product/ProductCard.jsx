@@ -43,7 +43,7 @@ export const ProductCard = ({ product }) => {
               {product.name}
             </a>
           </h3>
-          <p class="mt-0 text-sm text-gray-500">{product.brand}</p>
+          <p class="mt-0 text-sm text-gray-500">{product.brand_name}</p>
         </div>
       </div>
 
@@ -55,16 +55,16 @@ export const ProductCard = ({ product }) => {
               {product.rating} |
             </span>
             <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-xs font-medium text-gray-700">
-              {product.sold} Sold
+              {product.quantity_sold} Sold
             </div>
           </div>
 
           <div>
             <span className="text-gray-400 line-through">
-              ${product.originalPrice}
+              ${product.original_price}
             </span>
             <span className="font-bold text-lg ml-3">
-              ${product.discountedPrice}
+              ${product.selling_price}
             </span>
           </div>
         </div>
