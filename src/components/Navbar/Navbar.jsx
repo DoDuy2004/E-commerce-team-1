@@ -42,9 +42,11 @@ const Navbar = ({ categories }) => {
     };
   }, []);
 
-  const handleGetProductsByCategory = (categoryID) => {
+  const handleGetProductsByCategory = (categoryID, categoryName) => {
     setIsDropDown(false);
-    nav(`/products?categoryID=${categoryID}`);
+    nav(`/products?categoryID=${categoryID}`, { 
+      state: { categoryName: categoryName }
+    });
   };
 
   return (
@@ -65,18 +67,23 @@ const Navbar = ({ categories }) => {
                 className="absolute w-[80%] rounded-sm shadow top-[100%] left-0 text-black z-50 bg-white grid grid-cols-3 gap-4 justify-center items-center"
                 ref={dropdownRef}
               >
-                {categories &&
+                {categories.length > 0 ? (
                   categories.map((item, index) => {
                     return (
                       <li
                         key={index}
-                        className="px-4 py-2 text-center hover:bg-gray-100"
-                        onClick={() => handleGetProductsByCategory(item._id)}
+                        className="px-4 py-2 text-center hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleGetProductsByCategory(item._id, item.name)}
                       >
                         {item.name}
                       </li>
                     );
-                  })}
+                  })
+                ) : (
+                  <li className="px-4 py-2 text-center col-span-3">
+                    There are currently no product categories
+                  </li>
+                )}
               </ul>
             )}
           </div>

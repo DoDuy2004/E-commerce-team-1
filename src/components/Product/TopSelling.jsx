@@ -11,7 +11,7 @@ export const TopSelling = () => {
   const getProduct = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/products/top-selling"
+        "https://ecommerce-gh8q.onrender.com/api/products/top-selling"
       );
       setProductList(response.data.slice(0, 3)); // Get first 3 items
     } catch (error) {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/categories";
+const API_URL = "https://ecommerce-gh8q.onrender.com/api/categories";
 
 export const getCategories = async () => {
   try {
