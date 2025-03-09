@@ -7,6 +7,7 @@ import { Footer } from "./components/Footer/Footer";
 import WhitePage from "./pages/WhitePage";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import SearchProducts from "./pages/SearchProducts";
+import Product from "./pages/Product";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/search" element={<SearchProducts />}> </Route>
+            <Route path="/products" element={<Product />}></Route>
             <Route
               path="/product-detail/:id"
               element={<ProductDetail />}

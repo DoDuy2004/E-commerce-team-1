@@ -35,3 +35,20 @@ export const getSuggestions = async (keyword) => {
     return [];
   }
 };
+
+export const getProductsByCategory = async (categoryID) => {
+  try {
+    const response = await axios.get(
+      `https://ecommerce-gh8q.onrender.com/api/products/category`,
+      {
+        params: {
+          categoryID,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+};
