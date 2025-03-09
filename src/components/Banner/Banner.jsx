@@ -50,7 +50,7 @@ const Banner = () => {
 
   return (
     <div className="mt-15 md:mt-5 relative overflow-hidden rounded-2xl lg:mt-5">
-      {isLoading && (
+      {isLoading ? (
         <>
           <div
             className="flex h-60 lg:h-auto transition-transform duration-500 ease-in-out w-full"
@@ -101,6 +101,8 @@ const Banner = () => {
             ))}
           </div>
         </>
+      ) : (
+        <p>Loading...</p>
       )}
     </div>
   );

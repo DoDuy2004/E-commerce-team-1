@@ -5,6 +5,7 @@ import { ProductCard } from "../components/Product/ProductCard";
 
 const SearchProducts = () => {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoaing] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const keyword = queryParams.get("keyword");
@@ -16,6 +17,7 @@ const SearchProducts = () => {
     const fetchProducts = async () => {
       const data = await getProducts(keyword, categoryID);
       setProducts(data);
+      setIsLoaing(true);
     };
 
     fetchProducts();
@@ -24,17 +26,25 @@ const SearchProducts = () => {
   console.log(products);
   return (
     <div className="py-10 mt-10 lg:mt-0">
-      <div className=" mb-5 text-center leading-10">
-        <h2 className="font-semibold text-4xl">Search</h2>
-        <span>There are {products.length} products for search</span>
-      </div>
-      <p className="mb-5">Search results for <span className="font-semibold">{keyword}</span>.</p>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
-        {products &&
-          products.map((item, index) => {
-            return <ProductCard key={index} product={item} />;
-          })}
-      </div>
+      {isLoading ? (
+        <>
+          <div className=" mb-5 text-center leading-10">
+            <h2 className="font-semibold text-4xl">Search</h2>
+            <span>There are {products.length} products for search</span>
+          </div>
+          <p className="mb-5">
+            Search results for <span className="font-semibold">{keyword}</span>.
+          </p>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
+            {products &&
+              products.map((item, index) => {
+                return <ProductCard key={index} product={item} />;
+              })}
+          </div>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };
