@@ -52,7 +52,7 @@ const Header = () => {
       </div>
 
       {/* Navigation */}
-      <Navbar />
+      <Navbar categories={categories} />
 
       {/* Mobile Menu */}
       {isMenuOpen && <MobileMenu toggleMenu={toggleMenu} navLinks={navLinks} categories={categories} />}

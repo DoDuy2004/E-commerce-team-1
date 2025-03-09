@@ -3,7 +3,7 @@ import axios from "axios";
 export const getProducts = async (keyword, categoryID) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/products/search`,
+      `https://ecommerce-gh8q.onrender.com/api/products/search`,
       {
         params: {
           keyword,
@@ -21,7 +21,7 @@ export const getProducts = async (keyword, categoryID) => {
 export const getSuggestions = async (keyword) => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/api/search/suggestions`,
+      `https://ecommerce-gh8q.onrender.com/api/search/suggestions`,
       {
         params: {
           keyword,
