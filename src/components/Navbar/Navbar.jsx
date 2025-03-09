@@ -17,15 +17,21 @@ const Navbar = ({ categories }) => {
   const [isDropDown, setIsDropDown] = useState(false);
   const [isActive, setIsActive] = useState("Home");
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
   const nav = useNavigate();
 
-  const handleDropDown = (event) => {
+  const handleDropDown = () => {
     setIsDropDown((prev) => !prev);
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
         setIsDropDown(false);
       }
     };
@@ -37,6 +43,7 @@ const Navbar = ({ categories }) => {
   }, []);
 
   const handleGetProductsByCategory = (categoryID) => {
+    setIsDropDown(false);
     nav(`/products?categoryID=${categoryID}`);
   };
 
@@ -46,8 +53,9 @@ const Navbar = ({ categories }) => {
         <div className="flex items-center justify-between">
           <div className="relative w-[40%] py-4">
             <button
-              className="flex items-center gap-2 font-bold text-gray-700 hover:text-gray-900"
+              className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 hover:text-gray-900"
               onClick={(e) => handleDropDown(e)}
+              ref={buttonRef}
             >
               <BiCategory className="h-5 w-5" />
               CATEGORIES
