@@ -34,11 +34,23 @@ const Navbar = ({ categories }) => {
     <nav className="bg-white mt-20 ">
       <div className="min-w-full mx-auto hidden px-16 lg:block">
         <div className="flex items-center justify-between">
-          <div className="relative py-4">
-            <button className="flex items-center gap-2 font-bold text-gray-700 hover:text-gray-900">
+          <div className="relative w-1/2 py-4">
+            <button
+              className="flex items-center gap-2 font-bold text-gray-700 hover:text-gray-900"
+              onClick={() => setIsDropDown(prev => !prev)}
+            >
               <BiCategory className="h-5 w-5" />
               CATEGORIES
             </button>
+            {isDropDown && (
+              <ul className="absolute w-[60%] rounded-sm shadow top-[100%] left-0 text-black z-50 bg-white grid grid-cols-3 gap-4 justify-center items-center"
+              ref={dropdownRef}>
+                {categories &&
+                  categories.map((item, index) => {
+                    return <li className="px-4 py-2 hover:bg-gray-100">{item.name}</li>;
+                  })}
+              </ul>
+            )}
           </div>
 
           <ul className="flex space-x-8">
