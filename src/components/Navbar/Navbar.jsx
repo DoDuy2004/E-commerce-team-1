@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const navLinks = [
-  { name: "Home", href: "/white-page" },
+  { name: "Home", href: "/" },
   { name: "Today's Deals", href: "/white-page" },
   { name: "Customer Services", href: "/white-page" },
   { name: "Trending Products", href: "/white-page" },
