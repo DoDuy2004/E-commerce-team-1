@@ -25,8 +25,8 @@ export const ProductDetailInfo = () => {
               return (
                 <div
                   className={`${
-                    index === 2 ? "border-red-500" : "border-[#ada9ab]"
-                  } w-1/5 border overflow-hidden p-0.5 rounded-xl`}
+                    index === 2 ? "border-pink-500" : "border-[#dddcdd]"
+                  } w-1/5 border-[1.5px] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
                   key={index}
                 >
                   <img className="w-full rounded-lg" src={item.img} alt="" />
@@ -43,8 +43,8 @@ export const ProductDetailInfo = () => {
               return (
                 <div
                   className={`${
-                    index === 2 ? "border-red-500" : "border-[#ada9ab]"
-                  } py-2 px-5 border border-[#ada9ab] overflow-hidden rounded-xl`}
+                    index === 2 ? "border-pink-500" : "border-[#ada9ab]"
+                  } py-2 px-5 border border-[#ada9ab] overflow-hidden rounded-xl cursor-pointer hover:border-pink-500`}
                   key={index}
                 >
                   <span>{item}</span>
@@ -63,8 +63,8 @@ export const ProductDetailInfo = () => {
               return (
                 <div
                   className={`${
-                    index === 0 ? "border-red-500" : "border-[#ada9ab]"
-                  } py-2 px-5 border border-[#ada9ab] overflow-hidden p-0.5 rounded-xl`}
+                    index === 0 ? "border-pink-500" : "border-[#ada9ab]"
+                  } py-2 px-5 border border-[#ada9ab] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
                   key={index}
                 >
                   <span>{item}</span>
@@ -83,10 +83,11 @@ export const ProductDetailInfo = () => {
       <div className="w-full">
         <span className="block mb-2">Delivery on March 5th-11th</span>
         <div className="flex gap-2">
-          <button className="w-9/10 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl">
+          <button className="w-4/10 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">Buy now</button>
+          <button className="w-4/10 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
             Add to cart
           </button>
-          <button className="flex justify-center items-center w-1/10 border border-[#605d5e] py-3 rounded-md text-2xl">
+          <button className="flex justify-center items-center w-1/10 border border-[#605d5e] py-3 rounded-md text-2xl cursor-pointer hover:border-pink-400 hover:text-pink-400">
             <CiHeart />
           </button>
         </div>

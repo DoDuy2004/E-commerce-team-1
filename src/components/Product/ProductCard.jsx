@@ -29,7 +29,7 @@ export const ProductCard = ({ product }) => {
           )}
         </button>
         <img
-          src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg"
+          src={product.thumbnail}
           alt="Front of men&#039;s Basic Tee in black."
           class="aspect-square w-full rounded-md bg-gray-200 object-cover lg:aspect-auto lg:h-80 cursor-pointer"
         />
