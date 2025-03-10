@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { FaChevronLeft, FaChevronRight, FaExpand, FaTimes } from "react-icons/fa";
-
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaExpand,
+  FaTimes,
+} from "react-icons/fa";
 
 const images = [
   "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
@@ -12,6 +16,8 @@ const images = [
 
 export const FullScreenGallery = ({ currentIndexs, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(currentIndexs);
+
+  console.log(currentIndexs);
 
   const prevImage = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
@@ -31,16 +37,9 @@ export const FullScreenGallery = ({ currentIndexs, onClose }) => {
         <FaChevronLeft size={40} />
       </button>
 
-      <div className="flex gap-4">
-        {/* Main Image */}
-        <img
-          src={images[currentIndex]}
-          alt="Gallery Item"
-          className="max-h-[80vh] w-auto rounded-lg"
-        />
-
+      <div className="flex flex-col-reverse sm:flex-row lg:flex-row-reverse justify-center items-center gap-4 p-4">
         {/* Thumbnails */}
-        <div className="flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
+        <div className="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-y-auto max-h-[100px] sm:max-h-[400px]">
           {images.map((img, index) => (
             <img
               key={index}
@@ -53,6 +52,12 @@ export const FullScreenGallery = ({ currentIndexs, onClose }) => {
             />
           ))}
         </div>
+        {/* Main Image */}
+        <img
+          src={images[currentIndex]}
+          alt="Gallery Item"
+          className="max-h-[80vh] w-auto rounded-lg"
+        />
       </div>
 
       <button className="absolute right-4 text-white p-2" onClick={nextImage}>

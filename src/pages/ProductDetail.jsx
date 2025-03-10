@@ -5,7 +5,7 @@ import { ProductDetailImage } from '../components/ProductDetail/ProductDetailIma
 export const ProductDetail = () => {
   return (
     <>
-      <div className='grid grid-cols-1 md:grid-cols-2'>
+      <div className='grid grid-cols-1 md:grid-cols-2 mt-15 md:mt-0'>
         <ProductDetailImage/>
         <ProductDetailInfo/>
       </div>
