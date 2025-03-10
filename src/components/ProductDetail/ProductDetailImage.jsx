@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { FaChevronLeft, FaChevronRight, FaExpand } from "react-icons/fa";
 import { FullScreenGallery } from "./FullScreenGallery";
+import ModelSizeInfo from "../common/ModelSizeInfo";
+
 
 const images = [
   "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
@@ -39,19 +41,26 @@ export const ProductDetailImage = () => {
       </div>
 
       {/* Main Image */}
-      <div className="relative w-full max-w-[500px] sm:w-[500px] h-auto border flex items-center justify-center overflow-hidden">
+      <div className="relative w-full max-w-[500px] sm:w-[500px] h-auto flex items-center justify-center overflow-hidden">
         <img
           src={images[currentIndex]}
           alt="Product"
-          className={`w-full h-auto max-h-[500px] object-contain transition-transform bg-gray-100 duration-300 ${
-            zoom ? "scale-125" : "scale-100"
+          className={`w-full h-auto max-h-[500px] object-contain cursor-zoom-in transition-transform bg-gray-100 duration-300 ${
+            zoom ? "scale-150" : "scale-100"
           }`}
           onClick={toggleZoom}
         />
+
+        {/* Model Size Info */}
+        <div className="absolute top-4 left-4">
+          <ModelSizeInfo />
+        </div>
+
         {/* Zoom Button */}
         <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow" onClick={openFullScreen}>
           <FaExpand size={20} />
         </button>
+
         {/* Navigation Buttons */}
         {currentIndex > 0 && (
           <button className="absolute left-2 bg-white p-2 rounded-full shadow" onClick={prevImage}>
