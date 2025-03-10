@@ -4,15 +4,23 @@ import { TbInfoHexagon } from "react-icons/tb";
 import { CiHeart } from "react-icons/ci";
 import { BsTicketPerforated } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
+import { IoIosArrowForward } from "react-icons/io";
+import SizeTable from "./SizeTable";
 
-const topSize = ["S", "M", "L", "XL"];
+const topSize = [
+  { id: 1, size: "S", length: 60, width: 61 },
+  { id: 2, size: "M", length: 62, width: 63 },
+  { id: 3, size: "L", length: 64, width: 65 },
+  { id: 4, size: "XL", length: 66, width: 68 },
+];
 const botSize = ["S", "M", "L", "XL"];
 const patterns = [{ img }, { img }, { img }, { img }, { img }];
 
-export const ProductDetailInfo = () => {
+export const ProductDetailInfo = ({}) => {
   const [isActivePattern, setIsActivePattern] = useState(patterns[0].img);
-  const [isActiveTopSize, setIsActiveTopSize] = useState(topSize[0]);
+  const [isActiveTopSize, setIsActiveTopSize] = useState(topSize[0].size);
   const [isActiveBotSize, setIsActiveBotSize] = useState(botSize[0]);
+  const [isSizeTableOpen, setIsSizeTableOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
@@ -40,7 +48,9 @@ export const ProductDetailInfo = () => {
               return (
                 <li
                   className={`${
-                    isActivePattern === item.img ? "border-pink-500" : "border-[#dddcdd]"
+                    isActivePattern === item.img
+                      ? "border-pink-500"
+                      : "border-[#dddcdd]"
                   } w-1/5 border-[1.5px] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
                   key={index}
                   onClick={() => setIsActivePattern(item.img)}
@@ -51,20 +61,36 @@ export const ProductDetailInfo = () => {
             })}
         </ul>
       </div>
-      <div className="w-full">
-        <h4 className="text-lg font-semibold text-[#444143] mb-2">Top Size</h4>
+      <div className="w-full relative">
+        <h4 className="flex justify-between items-center text-lg font-semibold text-[#444143] mb-2">
+          Top Size{" "}
+          <button
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => setIsSizeTableOpen(true)}
+          >
+            Table of size conversion <IoIosArrowForward className="text-md" />
+          </button>
+          {isSizeTableOpen && (
+            <SizeTable
+              sizes={topSize}
+              onClose={() => setIsSizeTableOpen(false)}
+            />
+          )}
+        </h4>
         <ul className="flex flex-wrap gap-5">
           {topSize &&
             topSize.map((item, index) => {
               return (
                 <li
                   className={`${
-                    isActiveTopSize === item ? "border-pink-500" : "border-[#ada9ab]"
-                  } py-2 px-5 border border-[#ada9ab] overflow-hidden rounded-xl cursor-pointer hover:border-pink-500`}
+                    isActiveTopSize === item.size
+                      ? "border-pink-500"
+                      : "border-[#ada9ab]"
+                  } py-2 px-5 border-[2px] border-[#ada9ab] overflow-hidden rounded-xl cursor-pointer hover:border-pink-500`}
                   key={index}
-                  onClick={() => setIsActiveTopSize(item)}
+                  onClick={() => setIsActiveTopSize(item.size)}
                 >
-                  <span>{item}</span>
+                  <span>{item.size}</span>
                 </li>
               );
             })}
@@ -80,8 +106,10 @@ export const ProductDetailInfo = () => {
               return (
                 <li
                   className={`${
-                    isActiveBotSize === item ? "border-pink-500" : "border-[#ada9ab]"
-                  } py-2 px-5 border border-[#ada9ab] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
+                    isActiveBotSize === item
+                      ? "border-pink-500"
+                      : "border-[#ada9ab]"
+                  } py-2 px-5 border-[2px] border-[#ada9ab] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
                   key={index}
                   onClick={() => setIsActiveBotSize(item)}
                 >
@@ -101,13 +129,13 @@ export const ProductDetailInfo = () => {
       <div className="w-full">
         <span className="block mb-2">Delivery on March 5th-11th</span>
         <div className="flex gap-2">
-          <button className="w-4/10 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
+          <button className="w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
             Buy now
           </button>
-          <button className="w-4/10 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
+          <button className="w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
             Add to cart
           </button>
-          <button className="flex justify-center items-center w-1/10 border border-[#605d5e] py-3 rounded-md text-2xl cursor-pointer hover:border-pink-400 hover:text-pink-400">
+          <button className="flex justify-center items-center w-1/9 border border-[#605d5e] py-3 rounded-md text-2xl cursor-pointer hover:border-pink-400 hover:text-pink-400">
             <CiHeart />
           </button>
         </div>

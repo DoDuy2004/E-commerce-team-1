@@ -14,7 +14,7 @@ export const ProductCard = ({ product }) => {
         nav(`/product-detail/${product._id}`);
       }}
     >
-      <div className="relative aspect-square w-full h-80 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden transition-transform duration-300 ease-in-out hover:brightness-90 hover:scale-102">
+      <div className="relative cursor-pointer aspect-square w-full h-80 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden transition-transform duration-300 ease-in-out hover:brightness-90 hover:scale-102">
         <button
           className="absolute top-3 left-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
           onClick={(e) => {
@@ -36,7 +36,7 @@ export const ProductCard = ({ product }) => {
         />
       </div>
 
-      <div class="mt-1 flex justify-between">
+      <div class="mt-1 flex justify-between cursor-pointer">
         <div>
           <h3 class="text-xl text-gray-700 font-bold size-3 w-fit h-fit">
             <a>

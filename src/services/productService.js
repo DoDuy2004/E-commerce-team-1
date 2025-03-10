@@ -57,7 +57,7 @@ export const getTopSellingProduct = async () => {
 export const getPopularProduct2023 = async () => {
   try {
     const response = await axios.get(`${API_URL}products/popular`);
-    return response.data
+    return response.data;
   } catch (error) {
     console.error("Failed to fetch products:", error);
   }
@@ -71,7 +71,7 @@ export const getFurnitureCollection = async () => {
   } catch (error) {
     console.error("Failed to fetch products:", error);
   }
-}
+};
 
 export const getNewShoesCollection = async () => {
   try {
@@ -91,4 +91,13 @@ export const getRelatedProduct = async () => {
   } catch (error) {
     console.error("Failed to fetch products:", error);
   }
-}
+};
+
+export const getDetailProduct = async (productID) => {
+  try {
+    const reponse = await axios.get(`${API_URL}products/${productID}`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch product:", error);
+  }
+};
