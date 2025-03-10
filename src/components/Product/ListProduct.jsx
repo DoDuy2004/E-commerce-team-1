@@ -57,7 +57,7 @@ export const ListProduct = ({ title, productList }) => {
         <div className="flex gap-2">
           <button
             onClick={() => sliderRef.current.slickPrev()}
-            className={`bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition 
+            className={`bg-white cursor-pointer p-2 rounded-full shadow-md hover:bg-gray-100 transition 
               ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={currentSlide === 0}
           >
@@ -65,7 +65,7 @@ export const ListProduct = ({ title, productList }) => {
           </button>
           <button
             onClick={() => sliderRef.current.slickNext()}
-            className={`bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition 
+            className={`bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition cursor-pointer
               ${
                 currentSlide >= totalSlides - slidesToShow
                   ? "opacity-50 cursor-not-allowed"
