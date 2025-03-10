@@ -1,26 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { FaShoppingBag } from "react-icons/fa";
 import { Button } from "../Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getTopSellingProduct } from "../../services/productService";
 
 export const TopSelling = () => {
   const [productList, setProductList] = useState([]);
   const nav = useNavigate();
 
-  const getProduct = async () => {
-    try {
-      const response = await axios.get(
-        "https://ecommerce-gh8q.onrender.com/api/products/top-selling"
-      );
-      setProductList(response.data.slice(0, 3)); // Get first 3 items
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
-  };
+  const fetchTopSelling = async () => {
+    const data = await getTopSellingProduct();
+    setProductList(data)
+  }
 
   useEffect(() => {
-    getProduct();
+    fetchTopSelling()
   }, []);
 
   if (productList.length === 0) {
@@ -28,7 +22,7 @@ export const TopSelling = () => {
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="p-6 bg-white rounded-lg grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* Left Side - Featured Product */}
       <div
         className="md:col-span-2 flex flex-col md:flex-row items-center bg-gray-50 rounded-lg p-6 shadow-lg cursor-pointer"
@@ -65,6 +59,7 @@ export const TopSelling = () => {
               icon={<FaShoppingBag className="mr-2" />}
               clickEvent={(e) => {
                 e.stopPropagation();
+                nav(`/product-detail/${productList[0]._id}`)
               }}
             />
           </div>

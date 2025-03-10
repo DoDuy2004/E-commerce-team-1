@@ -11,10 +11,10 @@ export const ProductCard = ({ product }) => {
     <div
       class="group relative"
       onClick={() => {
-        nav(`/product-detail/${product.id}`);
+        nav(`/product-detail/${product._id}`);
       }}
     >
-      <div className="relative w-full h-80 bg-gray-100 rounded-lg shadow-md flex items-center justify-center object-cover duration-300 ease-in hover:brightness-90 hover:scale-102 overflow-hidden">
+      <div className="relative aspect-square w-full h-80 bg-gray-100 rounded-lg shadow-md flex items-center justify-center overflow-hidden transition-transform duration-300 ease-in-out hover:brightness-90 hover:scale-102">
         <button
           className="absolute top-3 left-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
           onClick={(e) => {
@@ -28,10 +28,11 @@ export const ProductCard = ({ product }) => {
             <FaRegHeart className="text-gray-500 text-xl transition" />
           )}
         </button>
+
         <img
           src={product.thumbnail}
-          alt="Front of men&#039;s Basic Tee in black."
-          class="aspect-square w-full rounded-md bg-gray-200 object-cover lg:aspect-auto lg:h-80 cursor-pointer"
+          alt="Product Thumbnail"
+          className="w-full h-full object-cover p-5 bg-white" 
         />
       </div>
 
