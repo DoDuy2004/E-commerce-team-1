@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getFurnitureCollection, getNewShoesCollection, getPopularProduct2023 } from "../../services/productService";
+import { getFurnitureCollection, getNewShoesCollection, getPopularProduct2023, getRelatedProduct } from "../../services/productService";
 
 
 const initialState = {
@@ -22,6 +22,11 @@ export const fetchPopularProduct = createAsyncThunk("products/fetchPopularProduc
   
   export const fetchNewShoesCollection = createAsyncThunk("products/fetchNewShoesCollection", async () => {
     const response = await getNewShoesCollection();
+    return response;
+  });
+
+  export const fetchRelatedProduct = createAsyncThunk("products/fetchRelatedProduct", async () => {
+    const response = await getRelatedProduct();
     return response;
   });
   
@@ -67,6 +72,18 @@ export const fetchPopularProduct = createAsyncThunk("products/fetchPopularProduc
         .addCase(fetchNewShoesCollection.rejected, (state, action) => {
           state.loading = false;
           state.error = action.error.message || "Failed to fetch New Shoes Collection";
+        })
+        .addCase(fetchRelatedProduct.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(fetchRelatedProduct.fulfilled, (state, action) => {
+          state.loading = false;
+          state.newShoes = action.payload;
+        })
+        .addCase(fetchRelatedProduct.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message || "Failed to fetch Related Product";
         });
     },
   });
