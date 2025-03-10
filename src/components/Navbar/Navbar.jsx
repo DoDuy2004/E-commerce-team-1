@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const navLinks = [
-  { name: "Home", href: "/white-page" },
-  { name: "Today's Deals", href: "/white-page" },
-  { name: "Customer Services", href: "/white-page" },
-  { name: "Trending Products", href: "/white-page" },
-  { name: "Blog", href: "/white-page" },
-  { name: "Special Offers", href: "/white-page" },
+  { name: "Home", href: "/" },
+  { name: "Today's Deals", href: "/today-deals" },
+  { name: "Customer Services", href: "/customer-services" },
+  { name: "Trending Products", href: "/trending-products" },
+  { name: "Blog", href: "/blog" },
+  { name: "Special Offers", href: "/special-offers" },
 ];
 
 const Navbar = ({ categories }) => {
