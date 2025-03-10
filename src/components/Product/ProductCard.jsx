@@ -38,13 +38,13 @@ export const ProductCard = ({ product }) => {
 
       <div class="mt-1 flex justify-between cursor-pointer">
         <div>
-          <h3 class="text-base text-gray-700 font-bold size-3 w-fit h-fit">
+          <h3 class="text-xl text-gray-700 font-bold size-3 w-fit h-fit">
             <a>
               <span class=" inset-0"></span>
               {product.name}
             </a>
           </h3>
-          <p class="mt-0 text-sm text-gray-500">{product.brand_name}</p>
+          <p class="mt-0 text-xl text-gray-500">{product.brand_name}</p>
         </div>
       </div>
 
@@ -52,19 +52,19 @@ export const ProductCard = ({ product }) => {
         <div className="flex items-start flex-col space-x-2 mt-2 text-sm">
           <div className="flex items-center justify-between text-orange-500">
             <FaStar size={16} fill="currentColor" />
-            <span className="ml-1 font-medium text-gray-700">
+            <span className="ml-1 font-medium text-gray-700 text-xl ">
               {product.rating} |
             </span>
-            <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-xs font-medium text-gray-700">
+            <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-xl font-medium text-gray-700">
               {product.quantity_sold} Sold
             </div>
           </div>
 
           <div>
-            <span className="text-gray-400 line-through">
+            <span className="text-gray-400 line-through text-xl ">
               ${product.original_price}
             </span>
-            <span className="font-bold text-lg ml-3">
+            <span className="font-bold text-xl  ml-3">
               ${product.selling_price}
             </span>
           </div>
