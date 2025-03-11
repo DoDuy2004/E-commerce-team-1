@@ -44,7 +44,7 @@ export const SellerProfile = () => {
   }, [dispatch])
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 max-w-full flex flex-col md:flex-row gap-6">
+    <div className="bg-white shadow-md rounded-lg p-6 max-w-full flex flex-col md:flex-row gap-6 mt-10">
       {/* Left: Seller Info */}
       <div className="md:w-1/3 flex flex-col justify-between">
         <div>

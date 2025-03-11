@@ -3,7 +3,6 @@ import axios from "axios";
 import { API_URL } from "../../services/API";
 
 const token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token")) : null;
-console.log(token)
 
 export const fetchWishlistQuantityAsync = createAsyncThunk(
   "wishlist/fetchWishlistQuantity",
@@ -18,7 +17,7 @@ export const fetchWishlistQuantityAsync = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(response.data.length)
+      // console.log(response.data.length)
 
       if (response.status !== 200) {
         throw new Error(

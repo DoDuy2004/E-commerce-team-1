@@ -10,7 +10,7 @@ const CustomPrevArrow = (props) => {
   return (
     <button
       onClick={onClick}
-      className="absolute left-0 z-10 bg-white shadow-lg rounded-full p-1 hover:scale-110 transition-transform text-gray-600 cursor-pointer" 
+      className="absolute left-0 z-10 bg-white shadow-lg rounded-full p-1 hover:scale-110 transition-transform text-gray-900 cursor-pointer" 
       style={{ top: "50%", transform: "translateY(-50%)", fontSize: "24px" }}
     >
       <BiChevronLeft size={28} />
@@ -23,10 +23,10 @@ const CustomNextArrow = (props) => {
   return (
     <button
       onClick={onClick}
-      className="absolute right-0 z-10 bg-white shadow-lg rounded-full p-1 hover:scale-110 transition-transform text-gray-600 cursor-pointer"
+      className="absolute right-0 z-10 bg-white shadow-lg rounded-full p-1 hover:scale-110 transition-transform text-gray-900 cursor-pointer"
       style={{ top: "50%", transform: "translateY(-50%)", fontSize: "24px" }}
     >
-      <BiChevronRight size={28} />
+      <BiChevronLeft size={28} />
     </button>
   );
 };
