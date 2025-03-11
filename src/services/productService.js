@@ -97,7 +97,7 @@ export const getRelatedProduct = async () => {
 
 export const getProductById = async (productID) => {
   try {
-    const response = await axios.get(`${API_URL}products/${productID}`);
+    const response = await axios.get(`${API_URL}products/detail/${productID}`);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch product:", error);

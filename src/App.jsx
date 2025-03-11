@@ -17,13 +17,13 @@ import Login from "./pages/Login";
 
 function App() {
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
+  const isAuthPage = ["/login", "/register"].includes(location.pathname);
 
   return (
-    <div className={isLoginPage ? "w-full min-h-screen" : ""}>
-      {!isLoginPage && <Header />}
+    <div className={isAuthPage ? "w-full min-h-screen" : ""}>
+      {!isAuthPage && <Header />}
       <ScrollToTop />
-      <div className={isLoginPage ? "w-full" : "px-16"}>
+      <div className={isAuthPage ? "w-full" : "px-16"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/today-deals" element={<TodayDeals />} />
@@ -36,9 +36,10 @@ function App() {
           <Route path="/product-detail/:id" element={<ProductDetail />} />
           <Route path="/white-page" element={<WhitePage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
-      {!isLoginPage && <Footer className="w-full" />}
+      {!isAuthPage && <Footer className="w-full" />}
     </div>
   );
 }
