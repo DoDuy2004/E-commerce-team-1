@@ -83,9 +83,9 @@ export const getNewShoesCollection = async () => {
   }
 };
 
-export const getDetailProduct = async (productID) => {
+export const getProductById = async (productID) => {
   try {
-    const reponse = await axios.get(`${API_URL}products/${productID}`);
+    const response = await axios.get(`${API_URL}products/${productID}`);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch product:", error);

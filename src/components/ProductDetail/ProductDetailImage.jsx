@@ -16,7 +16,8 @@ export const ProductDetailImage = () => {
   const [zoom, setZoom] = useState(false);
 
   const prevImage = () => currentIndex > 0 && setCurrentIndex(currentIndex - 1);
-  const nextImage = () => currentIndex < images.length - 1 && setCurrentIndex(currentIndex + 1);
+  const nextImage = () =>
+    currentIndex < images.length - 1 && setCurrentIndex(currentIndex + 1);
   const openFullScreen = () => setIsFullScreen(true);
   const closeFullScreen = () => setIsFullScreen(false);
   const toggleZoom = () => setZoom(!zoom);
@@ -49,24 +50,38 @@ export const ProductDetailImage = () => {
           onClick={toggleZoom}
         />
         {/* Zoom Button */}
-        <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow" onClick={openFullScreen}>
+        <button
+          className="absolute top-2 right-2 bg-white p-2 rounded-full shadow"
+          onClick={openFullScreen}
+        >
           <FaExpand size={20} />
         </button>
         {/* Navigation Buttons */}
         {currentIndex > 0 && (
-          <button className="absolute left-2 bg-white p-2 rounded-full shadow" onClick={prevImage}>
+          <button
+            className="absolute left-2 bg-white p-2 rounded-full shadow"
+            onClick={prevImage}
+          >
             <FaChevronLeft size={24} />
           </button>
         )}
         {currentIndex < images.length - 1 && (
-          <button className="absolute right-2 bg-white p-2 rounded-full shadow" onClick={nextImage}>
+          <button
+            className="absolute right-2 bg-white p-2 rounded-full shadow"
+            onClick={nextImage}
+          >
             <FaChevronRight size={24} />
           </button>
         )}
       </div>
 
       {/* Full-Screen Gallery */}
-      {isFullScreen && <FullScreenGallery currentIndexs={currentIndex} onClose={closeFullScreen} />}
+      {isFullScreen && (
+        <FullScreenGallery
+          currentIndexs={currentIndex}
+          onClose={closeFullScreen}
+        />
+      )}
     </div>
   );
 };
