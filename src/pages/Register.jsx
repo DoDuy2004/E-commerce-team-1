@@ -2,10 +2,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 // npm install react-toastify: hiển thị thông báo đẹp
 
 const Register = () => {
+  const nav = useNavigate();
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ const Register = () => {
       toast.success("Registration successful!");
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000);
+      }, 2000); // 2000 ms = 2 giây
       console.log(result);
     } catch (error) {
       console.error("Error:", error);
@@ -140,7 +142,12 @@ const Register = () => {
         />
         <p className="text-center">
           You already have an account?{" "}
-          <span className="text-blue-600 cursor-pointer">Login</span>
+          <span
+            className="text-blue-600 cursor-pointer"
+            onClick={() => nav("/login")}
+          >
+            Login
+          </span>
         </p>
       </form>
     </div>

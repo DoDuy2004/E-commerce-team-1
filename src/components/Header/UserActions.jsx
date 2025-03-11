@@ -9,7 +9,7 @@ const UserActions = () => {
   return (
     <div className="hidden lg:order-3 lg:flex lg:items-center lg:space-x-6">
       <Link
-        to="/white-page"
+        to="/register"
         className="flex items-center text-gray-700 hover:text-gray-900"
       >
         <FaRegUser className="h-6 w-6" />
