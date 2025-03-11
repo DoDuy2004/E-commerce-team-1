@@ -13,6 +13,7 @@ import SpecialOffers from "./pages/SpecialOffers";
 import TrendingProducts from "./pages/TrendingProducts";
 import CustomerServices from "./pages/CustomerServices";
 import Blog from "./pages/Blog";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/today-deals" element={<TodayDeals />}></Route>
             <Route path="/special-offers" element={<SpecialOffers />}></Route>
+            <Route path="/register" element={<Register />}></Route>
             <Route
               path="/trending-products"
               element={<TrendingProducts />}
