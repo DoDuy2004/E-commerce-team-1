@@ -51,9 +51,14 @@ export const fetchDetailProduct = createAsyncThunk(
 
 export const fetchRelatedProduct = createAsyncThunk(
   "products/fetchRelatedProduct",
-  async ({ categoryId }, { rejectWithValue }) => {
-    const response = await getRelatedProduct(categoryId);
-    return response;
+  async (categoryId, { rejectWithValue }) => { 
+    try {
+      const response = await getRelatedProduct(categoryId);
+      console.log("Fetched related products:", response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch");
+    }
   }
 );
 

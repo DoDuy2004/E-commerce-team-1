@@ -33,7 +33,7 @@ export const ProductDetailImage = () => {
             key={idx}
             src={img}
             alt={`Thumbnail ${idx + 1}`}
-            className={`w-16 h-16 cursor-pointer border-2 ${
+            className={`w-24 h-24 cursor-pointer border-2 ${
               idx === currentIndex ? "border-blue-500" : "border-transparent"
             }`}
             onClick={() => setCurrentIndex(idx)}
@@ -42,7 +42,7 @@ export const ProductDetailImage = () => {
       </div>
 
       {/* Main Image */}
-      <div className="relative w-full max-w-[500px] sm:w-[500px] h-auto flex items-center justify-center overflow-hidden">
+      <div className="relative w-full max-w-[700px] sm:w-[700px] h-auto flex items-center justify-center overflow-hidden">
         <img
           src={images[currentIndex]}
           alt="Product"
