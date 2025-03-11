@@ -1,10 +1,15 @@
-
 import React, { useEffect, useState } from "react";
 import { ProductDetailInfo } from "../components/ProductDetail/ProductDetailInfo";
 import { ProductDetailImage } from "../components/ProductDetail/ProductDetailImage";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDetailProduct } from "../redux/slices/productSlice";
+import {
+  fetchDetailProduct,
+} from "../redux/slices/productSlice";
+import { SellerProfile } from "../components/ProductDetail/SellerProfile";
+import AsSeenOn from "../components/ProductDetail/AsSeenOn";
+import { ListProduct } from "../components/Product/ListProduct";
+import SkeletonLoader from "../components/Loader/SkeletionLoader";
 
 export const ProductDetail = () => {
   const [productData, setProductData] = useState(null);
@@ -13,7 +18,9 @@ export const ProductDetail = () => {
   const [attributes, setAttributes] = useState([]); // Danh sách thuộc tính
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { product, loading, error } = useSelector((state) => state.products || {});
+  const { product, loading, error } = useSelector(
+    (state) => state.products || {}
+  );
 
   // Lấy dữ liệu sản phẩm từ Redux
   useEffect(() => {
@@ -48,7 +55,9 @@ export const ProductDetail = () => {
     if (productData && Object.keys(selectedAttributes).length > 0) {
       const compatibleVariants = productData.variants.filter((v) =>
         Object.entries(selectedAttributes).every(([type, value]) =>
-          v.attributes.some((attr) => attr.type === type && attr.value === value)
+          v.attributes.some(
+            (attr) => attr.type === type && attr.value === value
+          )
         )
       );
       // Nếu chỉ có 1 biến thể khớp, chọn nó
@@ -68,7 +77,11 @@ export const ProductDetail = () => {
   };
 
   if (!productData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center my-50">
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   return (
@@ -90,6 +103,8 @@ export const ProductDetail = () => {
           selectedVariant={selectedVariant}
         />
       </div>
+      <SellerProfile />
+      <AsSeenOn />
     </div>
   );
 };
