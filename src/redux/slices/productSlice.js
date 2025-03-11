@@ -4,6 +4,7 @@ import {
   getNewShoesCollection,
   getPopularProduct2023,
   getProductById,
+  getRelatedProduct
 } from "../../services/productService";
 
 const initialState = {
@@ -46,6 +47,12 @@ export const fetchDetailProduct = createAsyncThunk(
     return response;
   }
 );
+
+
+  export const fetchRelatedProduct = createAsyncThunk("products/fetchRelatedProduct", async () => {
+    const response = await getRelatedProduct();
+    return response;
+  });
 
 // Create Slice
 const productSlice = createSlice({
@@ -104,7 +111,19 @@ const productSlice = createSlice({
       .addCase(fetchDetailProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+     .addCase(fetchRelatedProduct.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(fetchRelatedProduct.fulfilled, (state, action) => {
+          state.loading = false;
+          state.newShoes = action.payload;
+        })
+        .addCase(fetchRelatedProduct.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message || "Failed to fetch Related Product";
+        });
   },
 });
 

@@ -74,7 +74,7 @@ export const TopSelling = () => {
             onClick={() => nav(`/product-detail/${product._id}`)}
           >
             <div className="text-left">
-              <p className="text-gray-700 font-semibold">{product.name}</p>
+              <p className="text-gray-700 text-2xl font-bold ">{product.name}</p>
               <span className="text-gray-900 font-bold">
                 ${product.selling_price}
               </span>

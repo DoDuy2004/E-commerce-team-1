@@ -9,6 +9,8 @@ export const ListProduct = ({ title, productList }) => {
   const sliderRef = React.useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // console.log(productList)
+
   // Disable prev/next buttons when at the first or last slide
   const totalSlides = productList.length;
   const slidesToShow = 4; // Adjust based on screen size
@@ -49,31 +51,31 @@ export const ListProduct = ({ title, productList }) => {
 
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-2 py-4 sm:pt-24 sm:py-10 lg:max-w-7xl lg:px-2 flex justify-between">
+      <div className="w-full px-4 py-6 sm:py-10 flex items-center justify-between">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           {title}
         </h2>
 
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <button
             onClick={() => sliderRef.current.slickPrev()}
-            className={`bg-white cursor-pointer p-2 rounded-full shadow-md hover:bg-gray-100 transition 
-              ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition 
+        ${currentSlide === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
             disabled={currentSlide === 0}
           >
-            <FaChevronLeft size={20} />
+            <FaChevronLeft size={24} />
           </button>
           <button
             onClick={() => sliderRef.current.slickNext()}
-            className={`bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition cursor-pointer
-              ${
-                currentSlide >= totalSlides - slidesToShow
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
+            className={`bg-white p-3 rounded-full shadow-lg hover:bg-gray-100 transition 
+        ${
+          currentSlide >= totalSlides - slidesToShow
+            ? "opacity-50 cursor-not-allowed"
+            : ""
+        }`}
             disabled={currentSlide >= totalSlides - slidesToShow}
           >
-            <FaChevronRight size={20} />
+            <FaChevronRight size={24} />
           </button>
         </div>
       </div>
