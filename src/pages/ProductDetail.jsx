@@ -1,36 +1,64 @@
-import React, { useEffect } from "react";
+
+import React, { useEffect, useState } from "react";
 import { ProductDetailInfo } from "../components/ProductDetail/ProductDetailInfo";
 import { ProductDetailImage } from "../components/ProductDetail/ProductDetailImage";
-import { ProductDescription } from "../components/ProductDetail/ProductDescription";
-import { SellerProfile } from "../components/ProductDetail/SellerProfile";
-import AsSeenOn from "../components/ProductDetail/AsSeenOn";
-import { ListProduct } from "../components/Product/ListProduct";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPopularProduct } from "../redux/slices/productSlice";
+import { fetchDetailProduct } from "../redux/slices/productSlice";
 
 export const ProductDetail = () => {
+  const [productData, setProductData] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const allImages = [];
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const { popularProduct } = useSelector((state) => state.products);
+  const { product, loading, error } = useSelector(
+    (state) => state.products || {}
+  );
 
   useEffect(() => {
-      dispatch(fetchPopularProduct());
-    }, [dispatch]);
+    if (id) {
+      dispatch(fetchDetailProduct(id));
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (product.variants && product.variants.length > 0) {
+      setProductData(product);
+      const defaultVariant =
+        product.variants.find((v) => v._id === product.variantDefault) ||
+        product.variants[0];
+      setSelectedVariant(defaultVariant);
+    }
+  }, [product]);
+
+  const handleVariantChange = (variantId) => {
+    const newVariant = productData.variants.find((v) => v._id === variantId);
+    setSelectedVariant(newVariant);
+  };
+
+  if (!productData) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-3 mt-15 md:mt-0">
-        <div className="md:col-span-2">
-          <ProductDetailImage />
-        </div>
-        <div className="md:col-span-1">
-          <ProductDetailInfo />
-        </div>
+    <div className="container mx-auto py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <ProductDetailImage
+          images={
+            selectedVariant
+              ? selectedVariant.images
+              : productData.product.images
+          }
+        />
+        <ProductDetailInfo
+          product={productData.product}
+          variants={productData.variants}
+          attributes={productData.attributes}
+          selectedVariant={selectedVariant}
+          onVariantChange={handleVariantChange}
+        />
       </div>
-
-      <ProductDescription />
-      <SellerProfile />
-      <ListProduct title={"Related Product"} productList={popularProduct}/>
-      <AsSeenOn />
-    </>
+    </div>
   );
 };

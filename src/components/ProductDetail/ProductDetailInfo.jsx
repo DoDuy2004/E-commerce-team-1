@@ -1,130 +1,96 @@
-import React, { useState } from "react";
-import img from "../../assets/img.jpg";
+"use client";
+
+import { useState } from "react";
 import { TbInfoHexagon } from "react-icons/tb";
 import { CiHeart } from "react-icons/ci";
 import { BsTicketPerforated } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
-import { IoIosArrowForward } from "react-icons/io";
-import SizeTable from "./SizeTable";
 
-const topSize = [
-  { id: 1, size: "S", length: 60, width: 61 },
-  { id: 2, size: "M", length: 62, width: 63 },
-  { id: 3, size: "L", length: 64, width: 65 },
-  { id: 4, size: "XL", length: 66, width: 68 },
-];
-const botSize = ["S", "M", "L", "XL"];
-const patterns = [{ img }, { img }, { img }, { img }, { img }];
-
-export const ProductDetailInfo = ({}) => {
-  const [isActivePattern, setIsActivePattern] = useState(patterns[0].img);
-  const [isActiveTopSize, setIsActiveTopSize] = useState(topSize[0].size);
-  const [isActiveBotSize, setIsActiveBotSize] = useState(botSize[0]);
+export const ProductDetailInfo = ({
+  product,
+  variants,
+  attributes,
+  selectedVariant,
+  onVariantChange,
+}) => {
   const [isSizeTableOpen, setIsSizeTableOpen] = useState(false);
+
+  const handleAttributeSelect = (type, value) => {
+    const newVariant = variants.find((v) =>
+      v.attributes.some((attr) => attr.type === type && attr.value === value)
+    );
+    if (newVariant) {
+      onVariantChange(newVariant._id);
+    }
+  };
+
+  const getAttributeValue = (type) => {
+    return selectedVariant?.attributes.find((attr) => attr.type === type)
+      ?.value;
+  };
 
   return (
     <div className="flex flex-col gap-4">
       <div className="pt-4">
         <div className="flex justify-between text-2xl font-semibold text-[#444143]">
-          <h2>Flamenco Frilled & High Waisted</h2>
+          <h2>{product.name}</h2>
           <h2 className="flex items-center gap-5">
             <div className="flex items-center gap-1 relative">
-              <span className="block text-3xl text-red-500">$110</span>
-              <BsTicketPerforated className="text-red-500" />
-              <FaCheckCircle className="text-sm text-red-500 absolute right-[-5%] bottom-[10%] bg-white" />
+              <span className="block text-3xl text-red-500">
+                $
+                {selectedVariant?.salePrice?.toFixed(2) ||
+                  selectedVariant?.price.toFixed(2)}
+              </span>
+              {selectedVariant.salePrice && (
+                <>
+                  <BsTicketPerforated className="text-red-500" />
+                  <FaCheckCircle className="text-sm text-red-500 absolute right-[-5%] bottom-[10%] bg-white" />
+                </>
+              )}
             </div>
-            <span className="block line-through text-xl text-[#7b7779]">
-              $115
-            </span>
+            {selectedVariant?.salePrice && (
+              <span className="block line-through text-xl text-[#7b7779]">
+                ${selectedVariant.price.toFixed(2)}
+              </span>
+            )}
           </h2>
         </div>
-        <h2 className="text-[#ada9ab] text-2xl font-semibold">Bikini</h2>
+        <h2 className="text-[#ada9ab] text-2xl font-semibold">
+          {product.brand_name}
+        </h2>
       </div>
+
+      {attributes.map((attribute) => (
+        <div key={attribute.type} className="w-full">
+          <h4 className="text-lg font-semibold text-[#444143] mb-2">
+            {attribute.type}
+          </h4>
+          <ul className="flex flex-wrap gap-5">
+            {attribute.values.map((value, index) => (
+              <li
+                key={index}
+                className={`py-2 px-5 border-2 ${
+                  getAttributeValue(attribute.type) === value
+                    ? "border-pink-500"
+                    : "border-[#ada9ab]"
+                } overflow-hidden rounded-xl cursor-pointer hover:border-pink-500`}
+                onClick={() => handleAttributeSelect(attribute.type, value)}
+              >
+                <span>{value}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
       <div className="w-full">
-        <h4 className="text-lg font-semibold text-[#444143] mb-2">Pattern</h4>
-        <ul className="flex flex-wrap gap-5">
-          {patterns &&
-            patterns.map((item, index) => {
-              return (
-                <li
-                  className={`${
-                    isActivePattern === item.img
-                      ? "border-pink-500"
-                      : "border-[#dddcdd]"
-                  } w-1/5 border-[1.5px] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
-                  key={index}
-                  onClick={() => setIsActivePattern(item.img)}
-                >
-                  <img className="w-full rounded-lg" src={item.img} alt="" />
-                </li>
-              );
-            })}
-        </ul>
-      </div>
-      <div className="w-full relative">
-        <h4 className="flex justify-between items-center text-lg font-semibold text-[#444143] mb-2">
-          Top Size{" "}
-          <button
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => setIsSizeTableOpen(true)}
-          >
-            Table of size conversion <IoIosArrowForward className="text-md" />
-          </button>
-          {isSizeTableOpen && (
-            <SizeTable
-              sizes={topSize}
-              onClose={() => setIsSizeTableOpen(false)}
-            />
-          )}
-        </h4>
-        <ul className="flex flex-wrap gap-5">
-          {topSize &&
-            topSize.map((item, index) => {
-              return (
-                <li
-                  className={`${
-                    isActiveTopSize === item.size
-                      ? "border-pink-500"
-                      : "border-[#ada9ab]"
-                  } py-2 px-5 border-[2px] border-[#ada9ab] overflow-hidden rounded-xl cursor-pointer hover:border-pink-500`}
-                  key={index}
-                  onClick={() => setIsActiveTopSize(item.size)}
-                >
-                  <span>{item.size}</span>
-                </li>
-              );
-            })}
-        </ul>
-      </div>
-      <div className="w-full">
-        <h4 className="text-lg font-semibold text-[#444143] mb-2">
-          Bottom Size
-        </h4>
-        <ul className="flex flex-wrap gap-5">
-          {botSize &&
-            botSize.map((item, index) => {
-              return (
-                <li
-                  className={`${
-                    isActiveBotSize === item
-                      ? "border-pink-500"
-                      : "border-[#ada9ab]"
-                  } py-2 px-5 border-[2px] border-[#ada9ab] overflow-hidden p-0.5 rounded-xl cursor-pointer hover:border-pink-500`}
-                  key={index}
-                  onClick={() => setIsActiveBotSize(item)}
-                >
-                  <span>{item}</span>
-                </li>
-              );
-            })}
-        </ul>
         <span className="flex items-center pt-2 gap-2 text-[#7f7c7d]">
-          <TbInfoHexagon /> 8 items left!
+          <TbInfoHexagon /> {selectedVariant?.stock || 0} items left!
         </span>
       </div>
       <div className="w-full px-2 py-3 bg-[#eeebed] text-[#454244] font-semibold rounded-md">
-        <h4>Bikini Size</h4>
-        <p>Please bear in mind that the fabric is stretchy.</p>
+        <h4>{product.name} Specifications</h4>
+        <p>{product.description}</p>
       </div>
       <div className="w-full">
         <span className="block mb-2">Delivery on March 5th-11th</span>
