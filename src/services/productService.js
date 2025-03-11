@@ -85,10 +85,10 @@ export const getNewShoesCollection = async () => {
   }
 }
 
-export const getRelatedProduct = async () => {
+export const getRelatedProduct = async (categoryId) => {
   try {
     // const response = await axios.get(`${API_URL}products/popular`);
-    const response = await axios.get(`${API_URL}products/category/latest?categoryID=67ca8e4e6c470100c9c094db`);
+    const response = await axios.get(`${API_URL}products/category/latest?categoryID=${categoryId}`);
     return response.data
   } catch (error) {
     console.error("Failed to fetch products:", error);
@@ -98,6 +98,7 @@ export const getRelatedProduct = async () => {
 export const getProductById = async (productID) => {
   try {
     const response = await axios.get(`${API_URL}products/detail/${productID}`);
+    // console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Failed to fetch product:", error);

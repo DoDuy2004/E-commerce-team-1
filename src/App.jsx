@@ -14,6 +14,7 @@ import TrendingProducts from "./pages/TrendingProducts";
 import CustomerServices from "./pages/CustomerServices";
 import Blog from "./pages/Blog";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   const location = useLocation();
