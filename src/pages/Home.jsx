@@ -5,13 +5,20 @@ import Banner from "../components/Banner/Banner";
 import TopCategories from "../components/TopCategories/TopCategories";
 import { TopSelling } from "../components/Product/TopSelling";
 import { useNavigate } from "react-router-dom";
-import { fetchFurnitureCollection, fetchNewShoesCollection, fetchPopularProduct } from "../redux/slices/productSlice";
+import {
+  fetchFurnitureCollection,
+  fetchNewShoesCollection,
+  fetchPopularProduct,
+} from "../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoader from "../components/Loader/SkeletionLoader";
+import { Toaster } from "react-hot-toast";
 
 export const Home = () => {
   const dispatch = useDispatch();
-  const { popularProduct, furniture, newShoes, loading, error } = useSelector((state) => state.products);
+  const { popularProduct, furniture, newShoes, loading, error } = useSelector(
+    (state) => state.products
+  );
 
   useEffect(() => {
     dispatch(fetchPopularProduct());
@@ -26,18 +33,26 @@ export const Home = () => {
 
   return (
     <div>
+      <Toaster position="top-center" reverseOrder={false} />
+
       <Banner />
       <TopCategories title={"Our Top Categories"} />
 
       {loading ? (
         <div className="flex justify-center items-center h-40">
-          <SkeletonLoader /> {/* ✅ Show circular loader while waiting for API */}
+          <SkeletonLoader />{" "}
+          {/* ✅ Show circular loader while waiting for API */}
         </div>
       ) : error ? (
-        <div className="text-center text-red-500 font-semibold">Failed to load products. Please try again.</div>
+        <div className="text-center text-red-500 font-semibold">
+          Failed to load products. Please try again.
+        </div>
       ) : (
         <>
-          <ListProduct title={"Popular Products 2023"} productList={popularProduct} />
+          <ListProduct
+            title={"Popular Products 2023"}
+            productList={popularProduct}
+          />
           <ListProduct title={"Furniture Collection"} productList={furniture} />
           <ListProduct title={"New Shoes Collection"} productList={newShoes} />
         </>
