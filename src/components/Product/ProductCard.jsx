@@ -2,10 +2,43 @@ import React, { useState } from "react";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { addToCartAsync } from "../../redux/slices/cartSlice";
+import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
 
 export const ProductCard = ({ product }) => {
   const [liked, setLiked] = useState(false);
   const nav = useNavigate();
+  const dispatch = useDispatch();
+  // const cartLoading = useSelector((state) => state.cart.loading);
+
+  const handleAddToCart = async (variantId) => {
+    dispatch(addToCartAsync({ variantId, quantity: 1 }))
+      .unwrap()
+      .then(() => {
+        toast.success("Added to cart!");
+      })
+      .catch((err) => {
+        console.error("Add to Cart Failed:", err);
+        toast.error(err);
+      });
+  };
+
+  const handleAddToWishList = async (productId) => {
+    dispatch(addToWishlistAsync({ productId, status: !liked }))
+      .unwrap()
+      .then(() => {
+        setLiked(!liked);
+        toast.success(liked ? "Removed from Wishlist!" : "Added to Wishlist!");
+      })
+      .catch((err) => {
+        console.error("Add To Wish List Failed: ", err);
+        toast.error(err);
+      });
+  };
+  
+
 
   return (
     <div
@@ -20,6 +53,7 @@ export const ProductCard = ({ product }) => {
           onClick={(e) => {
             setLiked(!liked);
             e.stopPropagation();
+            handleAddToWishList(product._id);
           }}
         >
           {liked ? (
@@ -32,7 +66,7 @@ export const ProductCard = ({ product }) => {
         <img
           src={product.thumbnail}
           alt="Product Thumbnail"
-          className="w-full h-full object-cover p-5 bg-white" 
+          className="w-full h-full object-cover p-5 bg-white"
         />
       </div>
 
@@ -74,7 +108,7 @@ export const ProductCard = ({ product }) => {
           className="p-2 bg-black text-white rounded-full w-10 h-10 flex items-center justify-center cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
-            nav("/");
+            handleAddToCart(product.variant_id);
           }}
         >
           <span className="text-base">
