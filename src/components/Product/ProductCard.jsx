@@ -32,7 +32,7 @@ export const ProductCard = ({ product }) => {
         <img
           src={product.thumbnail}
           alt="Product Thumbnail"
-          className="w-full h-full object-cover p-5 bg-white" 
+          className="w-full h-full object-cover p-5 bg-white"
         />
       </div>
 
