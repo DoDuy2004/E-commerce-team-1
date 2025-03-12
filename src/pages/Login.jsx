@@ -107,7 +107,7 @@ const Login = () => {
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Not a member?{" "}
           <a
-            href="#"
+            onClick={() => {nav("/register")}}
             className="font-semibold text-gray-600 hover:text-gray-500"
           >
             Sign Up

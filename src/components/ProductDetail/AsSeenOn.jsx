@@ -71,12 +71,12 @@ const AsSeenOn = () => {
       <div className="max-w-5xl mx-auto">
         <Slider {...settings}>
           {article.map((logo, idx) => (
-            <div key={idx} className="px-4">
+            <div key={idx} className="p-4">
               <a
                 href={logo.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center bg-gray-50 shadow-lg rounded-xl p-6 h-40"
+                className="flex items-center justify-center bg-white shadow-[0_5px_10px_rgba(0,0,0,0.2)] rounded-xl p-6 h-40"
               >
                 <img
                   src={logo.logo}

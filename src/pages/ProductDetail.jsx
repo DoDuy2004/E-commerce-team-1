@@ -35,6 +35,8 @@ export const ProductDetail = () => {
   useEffect(() => {
     if (product.variants && product.variants.length > 0) {
       setProductData(product);
+      // console.log(product)
+
       // Tạo danh sách thuộc tính từ các biến thể
       const groupedAttributes = product.variants
         .flatMap((v) => v.attributes)
@@ -121,6 +123,13 @@ export const ProductDetail = () => {
             selectedVariant={selectedVariant}
           />
         </div>
+      </div>
+      <div className="flex flex-col justify-center items-center db-content">
+        <p
+          dangerouslySetInnerHTML={{
+            __html: productData.productData.description,
+          }}
+        ></p>
       </div>
       <SellerProfile />
       <ListProduct title={"Related Product"} productList={relatedProduct} />
