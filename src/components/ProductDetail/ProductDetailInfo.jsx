@@ -3,6 +3,7 @@ import { TbInfoHexagon } from "react-icons/tb";
 import { CiHeart } from "react-icons/ci";
 import { BsTicketPerforated } from "react-icons/bs";
 import { FaCheckCircle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const ProductDetailInfo = ({
   product,
@@ -12,7 +13,9 @@ export const ProductDetailInfo = ({
   selectedAttributes,
   selectedVariant,
 }) => {
+  const nav = useNavigate();
   // Xử lý chọn/bỏ chọn thuộc tính
+
   const handleAttributeSelect = (type, value) => {
     const newSelectedAttributes = { ...selectedAttributes };
     if (newSelectedAttributes[type] === value) {
@@ -41,8 +44,15 @@ export const ProductDetailInfo = ({
           .map((attr) => attr.value)
       )
     );
-
     return compatibleValues;
+  };
+
+  const handleBuyNow = () => {
+    if (!selectedVariant) {
+      alert("Please select full product information before purchasing!");
+      return;
+    }
+    nav("/checkout");
   };
 
   return (
@@ -77,8 +87,6 @@ export const ProductDetailInfo = ({
           {product.brand_name}
         </h2>
       </div>
-
-      {/* Hiển thị các thuộc tính */}
       {attributes.map((attribute) => (
         <div key={attribute.type} className="w-full">
           <h4 className="text-lg font-semibold text-[#444143] mb-2">
@@ -115,7 +123,17 @@ export const ProductDetailInfo = ({
       {selectedVariant && (
         <div className="w-full">
           <span className="flex items-center pt-2 gap-2 text-[#7f7c7d]">
-            <TbInfoHexagon /> {selectedVariant.stock || 0} items left!
+            {selectedVariant.stock > 10 ? (
+              <>
+                <TbInfoHexagon /> {selectedVariant.stock}
+              </>
+            ) : selectedVariant.stock > 0 ? (
+              <>
+                <TbInfoHexagon /> {selectedVariant.stock} items left!
+              </>
+            ) : (
+              <span className="text-red-500 font-semibold">Out of Stock</span>
+            )}
           </span>
         </div>
       )}
@@ -126,10 +144,25 @@ export const ProductDetailInfo = ({
       <div className="w-full">
         <span className="block mb-2">Delivery on March 5th-11th</span>
         <div className="flex gap-2">
-          <button className="w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
+          <button
+            disabled={selectedVariant && selectedVariant.stock === 0}
+            className={`${
+              selectedVariant && selectedVariant.stock === 0
+                ? "cursor-not-allowed opacity-50"
+                : ""
+            } w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]`}
+            onClick={() => handleBuyNow()}
+          >
             Buy now
           </button>
-          <button className="w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
+          <button
+            disabled={selectedVariant && selectedVariant.stock === 0}
+            className={`${
+              selectedVariant && selectedVariant.stock === 0
+                ? "cursor-not-allowed opacity-50"
+                : ""
+            } w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]`}
+          >
             Add to cart
           </button>
           <button className="flex justify-center items-center w-1/9 border border-[#605d5e] py-3 rounded-md text-2xl cursor-pointer hover:border-pink-400 hover:text-pink-400">
