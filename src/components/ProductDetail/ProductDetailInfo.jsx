@@ -47,6 +47,8 @@ export const ProductDetailInfo = ({
     return compatibleValues;
   };
 
+  console.log(selectedVariant)
+
   const handleBuyNow = () => {
     if (!selectedVariant) {
       alert("Please select full product information before purchasing!");
@@ -63,7 +65,7 @@ export const ProductDetailInfo = ({
           {selectedVariant && (
             <h2 className="flex items-center gap-5">
               <div className="flex items-center gap-1 relative">
-                <span className="block text-3xl text-red-500">
+                <span className="block text-2xl text-red-500">
                   $
                   {selectedVariant.salePrice?.toFixed(2) ||
                     selectedVariant.price.toFixed(2)}

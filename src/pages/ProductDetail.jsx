@@ -20,9 +20,6 @@ export const ProductDetail = () => {
   const [attributes, setAttributes] = useState([]); // Danh sách thuộc tính
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { product, loading, error } = useSelector(
-    (state) => state.products || {}
-  );
   const { product, relatedProduct, loading, error } = useSelector(
     (state) => state.products || {}
   );

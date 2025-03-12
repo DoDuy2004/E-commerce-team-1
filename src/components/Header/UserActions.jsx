@@ -66,7 +66,7 @@ const UserActions = () => {
         <RiMailSendLine className="h-6 w-6" />
       </Link>
       <Link
-        to="/white-page"
+        to="/wishlist"
         className="relative text-gray-700 hover:text-gray-900"
       >
         <FaRegHeart className="h-6 w-6" />
@@ -75,7 +75,7 @@ const UserActions = () => {
         </span>
       </Link>
       <Link
-        to="/white-page"
+        to="/cart"
         className="flex items-center text-gray-700 hover:text-gray-900"
       >
         <div className="relative">

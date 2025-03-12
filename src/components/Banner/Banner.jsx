@@ -49,7 +49,7 @@ const Banner = () => {
   }, [currentIndex, ads]);
 
   return (
-    <div className="mt-15 md:mt-5 relative overflow-hidden rounded-2xl lg:mt-5">
+    <div className="mt-15 md:mt-15 relative overflow-hidden rounded-2xl lg:mt-5">
       {isLoading && (
         <>
           <div
