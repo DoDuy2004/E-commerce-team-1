@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -33,15 +33,17 @@ const feedbackData = [
   { username: "Shara", timeAgo: "Past 6 months", comment: "Nice" },
 ];
 
-export const SellerProfile = () => {
+export const SellerProfile = ({ shopId }) => {
   const [isFollow, setIsFollow] = useState(false);
   const nav = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { shopInfomation } = useSelector((state) => state.productDetails || {});
-  
+
   useEffect(() => {
-    dispatch(fetchShopInfomation())
-  }, [dispatch])
+    if (shopId) {
+      dispatch(fetchShopInfomation(shopId));
+    }
+  }, [dispatch, shopId]);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6 max-w-full flex flex-col md:flex-row gap-6 mt-10">
@@ -57,12 +59,14 @@ export const SellerProfile = () => {
             <div>
               <h2 className="text-lg font-semibold">{shopInfomation.name}</h2>
               <p className="text-sm text-gray-600">
-                {shopInfomation.followers} followers •{" "}
-                {sellerData.itemsSold} items sold
+                {shopInfomation.followers} followers • {sellerData.itemsSold}{" "}
+                items sold
               </p>
             </div>
           </div>
-          <p className="text-sm text-gray-600 mt-3">{shopInfomation.description}</p>
+          <p className="text-sm text-gray-600 mt-3">
+            {shopInfomation.description}
+          </p>
         </div>
 
         {/* Buttons */}
@@ -106,12 +110,14 @@ export const SellerProfile = () => {
 
       {/* Right: Seller Feedback */}
       <div className="md:w-2/3">
-        <h3 className="text-lg font-semibold flex ">
-          Feedback{" "}
-          <div className="flex justify-center items-center ml-5 text-orange-500">
-            <FaStar size={16} fill="currentColor" />
-            <span className="ml-1 font-medium text-gray-700">{shopInfomation.rating} |</span>
-            <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-xs font-medium text-gray-700">
+        <h3 className="text-lg md:text-xl font-semibold flex flex-wrap items-center">
+          Feedback
+          <div className="flex flex-wrap items-center ml-3 md:ml-3 text-orange-500">
+            <FaStar size={14} className="md:size-5" fill="currentColor" />
+            <span className="ml-1 text-sm md:text-base font-medium text-gray-700">
+              {shopInfomation.rating} |
+            </span>
+            <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-[10px] md:text-xs font-medium text-gray-700">
               2222 Sold
             </div>
           </div>

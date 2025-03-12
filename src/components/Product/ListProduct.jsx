@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { ProductCard } from "./ProductCard";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -8,23 +8,41 @@ import "slick-carousel/slick/slick-theme.css";
 export const ListProduct = ({ title, productList }) => {
   const sliderRef = React.useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(getSlidesToShow());
 
   // console.log(productList)
 
   // Disable prev/next buttons when at the first or last slide
   const totalSlides = productList.length;
-  const slidesToShow = 4; // Adjust based on screen size
+
+  function getSlidesToShow() {
+    if (window.innerWidth < 480) return 1;
+    if (window.innerWidth < 768) return 2;
+    if (window.innerWidth < 1024) return 3;
+    return 4;
+  }
 
   const handleBeforeChange = (oldIndex, newIndex) => {
     setCurrentSlide(newIndex);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesToShow(getSlidesToShow());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
 
   // Slider settings
   const settings = {
     dots: false,
     speed: 500,
     infinite: false,
-    slidesToShow: 4, // Default for large screens
+    slidesToShow: slidesToShow, // Default for large screens
     slidesToScroll: 1,
     beforeChange: handleBeforeChange,
     responsive: [
@@ -44,6 +62,7 @@ export const ListProduct = ({ title, productList }) => {
         breakpoint: 480, // Mobile portrait
         settings: {
           slidesToShow: 1,
+          infinite: true,
         },
       },
     ],
@@ -51,8 +70,8 @@ export const ListProduct = ({ title, productList }) => {
 
   return (
     <div className="bg-white">
-      <div className="w-full px-4 py-6 sm:py-10 flex items-center justify-between">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+      <div className="w-full px-4 py-6 sm:pt-15 sm:pb-5 flex items-center justify-between">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
           {title}
         </h2>
 
@@ -83,7 +102,7 @@ export const ListProduct = ({ title, productList }) => {
       <div className="relative">
         <Slider ref={sliderRef} {...settings}>
           {productList.map((product) => (
-            <div key={product.id} className="px-2">
+            <div key={product.id} className="px-5">
               <ProductCard product={product} />
             </div>
           ))}

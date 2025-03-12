@@ -45,16 +45,16 @@ export const fetchDetailProduct = createAsyncThunk(
   "products/getProductById",
   async (id, { rejectWithValue }) => {
     const response = await getProductById(id);
+    // console.log(response)
     return response;
   }
 );
 
 export const fetchRelatedProduct = createAsyncThunk(
   "products/fetchRelatedProduct",
-  async (categoryId, { rejectWithValue }) => { 
+  async (categoryId, { rejectWithValue }) => {
     try {
       const response = await getRelatedProduct(categoryId);
-      console.log("Fetched related products:", response);
       return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch");
@@ -66,7 +66,14 @@ export const fetchRelatedProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    resetProductState: (state) => {
+      state.product = {};
+      state.relatedProduct = [];
+      state.loading = false;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPopularProduct.pending, (state) => {
@@ -134,5 +141,7 @@ const productSlice = createSlice({
       });
   },
 });
+
+export const {resetProductState} = productSlice.actions
 
 export default productSlice.reducer;

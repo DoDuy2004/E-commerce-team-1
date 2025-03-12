@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
@@ -8,10 +8,14 @@ import { addToCartAsync } from "../../redux/slices/cartSlice";
 import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
 
 export const ProductCard = ({ product }) => {
-  const [liked, setLiked] = useState(product.wishlist);
+  const [liked, setLiked] = useState(product?.wishlist || false);
   const nav = useNavigate();
   const dispatch = useDispatch();
   // const cartLoading = useSelector((state) => state.cart.loading);
+
+  useEffect(() => {
+      setLiked(product?.wishlist || false);
+    }, [product]);
 
   const handleAddToCart = async (variantId) => {
     dispatch(addToCartAsync({ variantId, quantity: 1 }))
@@ -85,10 +89,10 @@ export const ProductCard = ({ product }) => {
         <div className="flex items-start flex-col space-x-2 mt-2 text-sm">
           <div className="flex items-center justify-between text-orange-500">
             <FaStar size={16} fill="currentColor" />
-            <span className="ml-1 font-medium text-gray-700 text-xl ">
+            <span className="ml-1 font-medium text-gray-700 text-lg ">
               {product.rating} |
             </span>
-            <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-xl font-medium text-gray-700">
+            <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-lg font-medium text-gray-700">
               {product.quantity_sold} Sold
             </div>
           </div>

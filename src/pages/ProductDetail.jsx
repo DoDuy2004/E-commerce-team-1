@@ -6,15 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchDetailProduct,
   fetchRelatedProduct,
+  resetProductState,
 } from "../redux/slices/productSlice";
 import { SellerProfile } from "../components/ProductDetail/SellerProfile";
 import AsSeenOn from "../components/ProductDetail/AsSeenOn";
 import { ListProduct } from "../components/Product/ListProduct";
 import SkeletonLoader from "../components/Loader/SkeletionLoader";
+import { Toaster } from "react-hot-toast";
 
 export const ProductDetail = () => {
   const [productData, setProductData] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
+  const [shopId, setShopId] = useState(null)
   const [selectedAttributes, setSelectedAttributes] = useState({}); // Thuộc tính đã chọn
   const [selectedVariant, setSelectedVariant] = useState(null); // Biến thể được chọn
   const [attributes, setAttributes] = useState([]); // Danh sách thuộc tính
@@ -44,13 +47,21 @@ export const ProductDetail = () => {
 
   useEffect(() => {
     if (id) {
+      dispatch(resetProductState());
       dispatch(fetchDetailProduct(id));
     }
   }, [id, dispatch]);
 
   useEffect(() => {
+    if (product) {
+      setProductData(product.productData); // Update when Redux fetches new data
+    }
+  }, [product]);
+
+  // Xử lý dữ liệu sản phẩm khi nhận được
+  useEffect(() => {
     if (product.variants && product.variants.length > 0) {
-      setProductData(product);
+      // setProductData(product);
       // console.log(product)
 
       // Tạo danh sách thuộc tính từ các biến thể
@@ -87,10 +98,12 @@ export const ProductDetail = () => {
   };
 
   useEffect(() => {
-    if (productData) {
-      setCategoryId(productData.productData.category_id);
+    if (product) {
+      setCategoryId(product.productData?.category_id);
+      setShopId(product.productData?.shop_id?._id)
+      // console.log(shopId)
     }
-  }, [productData]);
+  }, [product]);
 
   useEffect(() => {
     if (categoryId) {
@@ -99,47 +112,49 @@ export const ProductDetail = () => {
     }
   }, [categoryId, dispatch]);
 
-  if (!productData) {
-    return (
+  return loading || !product || !product.productData ? (
+    <>
       <div className="flex justify-center items-center my-50">
         <SkeletonLoader />
       </div>
-    );
-  }
+    </>
+  ) : (
+    <>
+      <div className="container mx-auto py-8">
+        <Toaster position="top-center" reverseOrder={false} />
 
-  return (
-    <div className="container mx-auto py-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 mt-15 md:mt-0">
-        <div className="md:col-span-2">
-          <ProductDetailImage
-            images={
-              selectedVariant
-                ? selectedVariant.images
-                : productData.productData.images
-            }
-          />
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-15 md:mt-0">
+          <div className="md:col-span-2">
+            <ProductDetailImage
+              product={productData}
+              variants={product?.variants}
+              images={product?.productData?.images}
+              selectedAttributes={selectedAttributes}
+              selectedVariant={selectedVariant}
+            />
+          </div>
+          <div className="md:col-span-1">
+            <ProductDetailInfo
+              product={productData}
+              variants={product?.variants}
+              attributes={attributes}
+              onAttributesChange={handleAttributesChange}
+              selectedAttributes={selectedAttributes}
+              selectedVariant={selectedVariant}
+            />
+          </div>
         </div>
-        <div className="md:col-span-1">
-          <ProductDetailInfo
-            product={productData.productData}
-            variants={productData.variants}
-            attributes={attributes}
-            onAttributesChange={handleAttributesChange}
-            selectedAttributes={selectedAttributes}
-            selectedVariant={selectedVariant}
-          />
+        <div className="flex flex-col justify-center items-center db-content mt-20">
+          <p
+            dangerouslySetInnerHTML={{
+              __html: product.productData?.description,
+            }}
+          ></p>
         </div>
+        <SellerProfile shopId={shopId}/>
+        <ListProduct title={"Related Product"} productList={relatedProduct} />
+        <AsSeenOn />
       </div>
-      <div className="flex flex-col justify-center items-center db-content">
-        <p
-          dangerouslySetInnerHTML={{
-            __html: productData.productData.description,
-          }}
-        ></p>
-      </div>
-      <SellerProfile />
-      <ListProduct title={"Related Product"} productList={relatedProduct} />
-      <AsSeenOn />
-    </div>
+    </>
   );
 };
