@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { getCategories } from "../../services/categoryService";
 import Logo from "./Logo";
 import MobileMenuToggle from "./MobileMenuToggle";
@@ -6,6 +6,7 @@ import Searchbar from "./Searchbar";
 import UserActions from "./UserActions";
 import Navbar from "../Navbar/Navbar";
 import MobileMenu from "./MobileMenu";
+import Cart from "../common/Cart";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -19,6 +20,7 @@ const navLinks = [
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -47,7 +49,8 @@ const Header = () => {
           <Searchbar categories={categories} />
 
           {/* User Actions */}
-          <UserActions />
+          <UserActions setIsCartOpen={setIsCartOpen}/>
+          <Cart open={isCartOpen} setOpen={setIsCartOpen}/>
         </div>
       </div>
 
@@ -55,7 +58,7 @@ const Header = () => {
       <Navbar categories={categories} />
 
       {/* Mobile Menu */}
-      {isMenuOpen && <MobileMenu toggleMenu={toggleMenu} navLinks={navLinks} categories={categories} />}
+      {isMenuOpen && <MobileMenu toggleMenu={toggleMenu} navLinks={navLinks} categories={categories} setIsCartOpen={setIsCartOpen}/>}
     </header>
   );
 };

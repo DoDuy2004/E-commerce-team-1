@@ -28,7 +28,7 @@ function App() {
     <div className={isAuthPage ? "w-full min-h-screen" : ""}>
       {!isAuthPage && <Header />}
       <ScrollToTop />
-      <Cart/>
+      {/* <Cart/> */}
       <div className={isAuthPage ? "w-full" : "px-5 lg:px-20"}>
         <Routes>
           <Route path="/" element={<Home />} />
