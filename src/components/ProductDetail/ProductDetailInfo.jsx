@@ -6,6 +6,7 @@ import { FaCheckCircle, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
+import { useNavigate } from "react-router-dom";
 
 export const ProductDetailInfo = ({
   product,
@@ -37,7 +38,9 @@ export const ProductDetailInfo = ({
       });
   };
 
+  const nav = useNavigate();
   // Xử lý chọn/bỏ chọn thuộc tính
+
   const handleAttributeSelect = (type, value) => {
     const newSelectedAttributes = { ...selectedAttributes };
     if (newSelectedAttributes[type] === value) {
@@ -66,8 +69,17 @@ export const ProductDetailInfo = ({
           .map((attr) => attr.value)
       )
     );
-
     return compatibleValues;
+  };
+
+  console.log(selectedVariant)
+
+  const handleBuyNow = () => {
+    if (!selectedVariant) {
+      alert("Please select full product information before purchasing!");
+      return;
+    }
+    nav("/checkout");
   };
 
   return (
@@ -78,7 +90,7 @@ export const ProductDetailInfo = ({
           {selectedVariant && (
             <h2 className="flex items-center gap-5">
               <div className="flex items-center gap-1 relative">
-                <span className="block text-3xl text-red-500">
+                <span className="block text-2xl text-red-500">
                   $
                   {selectedVariant.salePrice?.toFixed(2) ||
                     selectedVariant.price.toFixed(2)}
@@ -102,8 +114,6 @@ export const ProductDetailInfo = ({
           {product?.brand_name}
         </h2>
       </div>
-
-      {/* Hiển thị các thuộc tính */}
       {attributes.map((attribute) => (
         <div key={attribute.type} className="w-full">
           <h4 className="text-lg font-semibold text-[#444143] mb-2">
@@ -140,7 +150,17 @@ export const ProductDetailInfo = ({
       {selectedVariant && (
         <div className="w-full">
           <span className="flex items-center pt-2 gap-2 text-[#7f7c7d]">
-            <TbInfoHexagon /> {selectedVariant.stock || 0} items left!
+            {selectedVariant.stock > 10 ? (
+              <>
+                <TbInfoHexagon /> {selectedVariant.stock}
+              </>
+            ) : selectedVariant.stock > 0 ? (
+              <>
+                <TbInfoHexagon /> {selectedVariant.stock} items left!
+              </>
+            ) : (
+              <span className="text-red-500 font-semibold">Out of Stock</span>
+            )}
           </span>
         </div>
       )}
@@ -150,10 +170,25 @@ export const ProductDetailInfo = ({
       <div className="w-full">
         <span className="block mb-2">Delivery on March 5th-11th</span>
         <div className="flex gap-2">
-          <button className="w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
+          <button
+            disabled={selectedVariant && selectedVariant.stock === 0}
+            className={`${
+              selectedVariant && selectedVariant.stock === 0
+                ? "cursor-not-allowed opacity-50"
+                : ""
+            } w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]`}
+            onClick={() => handleBuyNow()}
+          >
             Buy now
           </button>
-          <button className="w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]">
+          <button
+            disabled={selectedVariant && selectedVariant.stock === 0}
+            className={`${
+              selectedVariant && selectedVariant.stock === 0
+                ? "cursor-not-allowed opacity-50"
+                : ""
+            } w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]`}
+          >
             Add to cart
           </button>
           <button

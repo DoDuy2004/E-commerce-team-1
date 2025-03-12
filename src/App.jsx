@@ -17,6 +17,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Profile } from "./pages/Profile";
 import Cart from "./components/common/Cart";
+import Checkout from "./pages/Checkout";
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   const location = useLocation();
@@ -27,7 +29,7 @@ function App() {
       {!isAuthPage && <Header />}
       <ScrollToTop />
       <Cart/>
-      <div className={isAuthPage ? "w-full" : "px-16"}>
+      <div className={isAuthPage ? "w-full" : "px-5 lg:px-20"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/today-deals" element={<TodayDeals />} />
@@ -42,6 +44,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
       </div>
       {!isAuthPage && <Footer className="w-full" />}

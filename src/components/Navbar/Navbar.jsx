@@ -51,7 +51,7 @@ const Navbar = ({ categories }) => {
 
   return (
     <nav className="bg-white mt-20 ">
-      <div className="min-w-full mx-auto hidden px-16 lg:block">
+      <div className="min-w-full mx-auto hidden px-20 lg:block">
         <div className="flex items-center justify-between">
           <div className="relative w-[40%] py-4">
             <button
@@ -88,14 +88,14 @@ const Navbar = ({ categories }) => {
             )}
           </div>
 
-          <ul className="flex space-x-8">
+          <ul className="flex gap-10 text-sm lg:text-base sm:text-sm">
             {navLinks.map((link, index) => (
               <li key={index}>
                 <Link
                   to={link.href}
                   className={` ${
                     isActive === link.name ? "text-gray-900" : ""
-                  }  font-semibold block py-4 text-gray-500 hover:text-gray-900`}
+                  } truncate font-semibold block py-4 text-gray-500 hover:text-gray-900`}
                   onClick={() => setIsActive((prev) => link.name)}
                 >
                   {link.name}

@@ -46,7 +46,7 @@ const Register = () => {
 
   return (
     <div className="h-screen flexflex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <ToastContainer position="top-right" />
+      <ToastContainer position="top-center" />
       <h2 className="text-center text-3xl">Sign up</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
