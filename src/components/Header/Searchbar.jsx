@@ -85,9 +85,9 @@ const Searchbar = ({ categories }) => {
   // console.log(searchByProduct);
 
   return (
-    <div className="order-3 mt-4 lg:order-2 lg:mt-0 lg:flex lg:w-[40%] xl:w-[50%]">
+    <div className="order-3 mt-4 lg:order-2 sm:w-full lg:mt-0 lg:flex lg:w-[40%] xl:w-[50%]">
       <div className="relative flex w-full">
-        <div className="relative w-full">
+        <div className="relative w-full md:w-[100%]">
           {!searchByProduct && (
             <IoSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           )}
@@ -115,7 +115,7 @@ const Searchbar = ({ categories }) => {
           } relative w-1/3 flex items-center justify-center border border-l-1 border-gray-300 bg-white px-4 text-gray-500`}
           onClick={handleDropDown}
         >
-          <span className="w-full text-xs lg:text-base md:text-sm text-center">
+          <span className="w-full text-xs lg:text-md md:text-sm text-center">
             {selectedCategory}
           </span>
           <IoIosArrowDown
@@ -147,7 +147,7 @@ const Searchbar = ({ categories }) => {
         </div>
         <button
           onClick={() => handleSearchProduct()}
-          className="rounded-r-md bg-black px-4 py-2 cursor-pointer text-white focus:outline-0"
+          className="rounded-r-md bg-black p-4 py-2 cursor-pointer text-white focus:outline-0"
         >
           <IoSearch className="h-5 w-5" />
         </button>

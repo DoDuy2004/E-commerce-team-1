@@ -24,56 +24,62 @@ export const ProductDetail = () => {
     (state) => state.products || {}
   );
 
-  // Lấy dữ liệu sản phẩm từ Redux
+  function extractAttributes(variants) {
+    const attributeMap = {};
+
+    variants.forEach((variant) => {
+      variant.attributes.forEach((attr) => {
+        if (!attributeMap[attr.type]) {
+          attributeMap[attr.type] = new Set();
+        }
+        attributeMap[attr.type].add(attr.value);
+      });
+    });
+
+    return Object.entries(attributeMap).map(([type, values]) => ({
+      type,
+      values: [...values],
+    }));
+  }
+
   useEffect(() => {
     if (id) {
       dispatch(fetchDetailProduct(id));
     }
   }, [id, dispatch]);
 
-  // Xử lý dữ liệu sản phẩm khi nhận được
   useEffect(() => {
     if (product.variants && product.variants.length > 0) {
       setProductData(product);
       // console.log(product)
 
       // Tạo danh sách thuộc tính từ các biến thể
-      const groupedAttributes = product.variants
-        .flatMap((v) => v.attributes)
-        .reduce((acc, { type, value }) => {
-          const attr = acc.find((a) => a.type === type);
-          if (attr) {
-            attr.values.add(value);
-          } else {
-            acc.push({ type, values: new Set([value]) });
-          }
-          return acc;
-        }, [])
-        .map((attr) => ({ type: attr.type, values: Array.from(attr.values) }));
+      const groupedAttributes = extractAttributes(product.variants);
+
       setAttributes(groupedAttributes);
+
+      console.log(groupedAttributes);
     }
   }, [product]);
 
-  // Cập nhật biến thể khi thuộc tính thay đổi
   useEffect(() => {
-    if (productData && Object.keys(selectedAttributes).length > 0) {
-      const compatibleVariants = productData.variants.filter((v) =>
+    if (product && Object.keys(selectedAttributes).length > 0) {
+      const compatibleVariants = product.variants.filter((v) =>
         Object.entries(selectedAttributes).every(([type, value]) =>
           v.attributes.some(
             (attr) => attr.type === type && attr.value === value
           )
         )
       );
-      // Nếu chỉ có 1 biến thể khớp, chọn nó
       if (compatibleVariants.length === 1) {
         setSelectedVariant(compatibleVariants[0]);
       } else {
         setSelectedVariant(null);
       }
     } else {
-      setSelectedVariant(null); // Không có thuộc tính nào được chọn thì không chọn biến thể
+      setSelectedVariant(null);
     }
-  }, [selectedAttributes, productData]);
+  }, [selectedAttributes, product]);
 
   // Callback để cập nhật thuộc tính
   const handleAttributesChange = (newAttributes) => {

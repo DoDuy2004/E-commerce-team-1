@@ -21,7 +21,7 @@ const TopCategories = ({ title }) => {
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">{title}</h2>
         <Link
           to="/White-page"
-          className="text-sm sm:text-base font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+          className="text-sm sm:text-base font-semibold text-black hover:text-gray-500 transition-colors"
         >
           See All
         </Link>

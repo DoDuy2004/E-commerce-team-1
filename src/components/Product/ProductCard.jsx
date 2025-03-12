@@ -12,7 +12,6 @@ export const ProductCard = ({ product }) => {
   const nav = useNavigate();
   const dispatch = useDispatch();
   // const cartLoading = useSelector((state) => state.cart.loading);
-  console.log(product)
 
   const handleAddToCart = async (variantId) => {
     dispatch(addToCartAsync({ variantId, quantity: 1 }))
