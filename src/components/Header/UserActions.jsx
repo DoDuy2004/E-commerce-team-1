@@ -26,6 +26,8 @@ const UserActions = () => {
     localStorage.clear()
     dispatch(resetCartState());
     dispatch(resetWishlistState())
+    window.location.reload();
+
     nav('/')
     toast.success("Logout success")
   }

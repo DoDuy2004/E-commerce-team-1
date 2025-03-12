@@ -8,10 +8,11 @@ import { addToCartAsync } from "../../redux/slices/cartSlice";
 import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
 
 export const ProductCard = ({ product }) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(product.wishlist);
   const nav = useNavigate();
   const dispatch = useDispatch();
   // const cartLoading = useSelector((state) => state.cart.loading);
+  console.log(product)
 
   const handleAddToCart = async (variantId) => {
     dispatch(addToCartAsync({ variantId, quantity: 1 }))
@@ -30,7 +31,7 @@ export const ProductCard = ({ product }) => {
       .unwrap()
       .then(() => {
         setLiked(!liked);
-        toast.success(liked ? "Removed from Wishlist!" : "Added to Wishlist!");
+        toast.success(!liked ? "Added to Wishlist!" : "Removed from Wishlist!");
       })
       .catch((err) => {
         console.error("Add To Wish List Failed: ", err);
@@ -51,7 +52,6 @@ export const ProductCard = ({ product }) => {
         <button
           className="absolute top-3 left-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 cursor-pointer"
           onClick={(e) => {
-            setLiked(!liked);
             e.stopPropagation();
             handleAddToWishList(product._id);
           }}
