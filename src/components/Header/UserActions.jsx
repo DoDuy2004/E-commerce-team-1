@@ -5,20 +5,26 @@ import { FaRegHeart } from "react-icons/fa";
 import { LuShoppingCart } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCartQuantityAsync, resetCartState } from "../../redux/slices/cartSlice";
+import {
+  fetchCartQuantityAsync,
+  resetCartState,
+} from "../../redux/slices/cartSlice";
 import toast from "react-hot-toast";
-import { fetchWishlistQuantityAsync, resetWishlistState } from "../../redux/slices/wishListSlice";
+import {
+  fetchWishlistQuantityAsync,
+  resetWishlistState,
+} from "../../redux/slices/wishListSlice";
 
-const UserActions = () => {
+const UserActions = ({ setIsCartOpen }) => {
   const username = JSON.parse(localStorage.getItem("username"));
   const cartCount = useSelector((state) => state.cart.totalQuantity);
-  const wishListCount = useSelector((state) => state.wishlist.totalQuantity)
+  const wishListCount = useSelector((state) => state.wishlist.totalQuantity);
   const dispatch = useDispatch();
-  const nav = useNavigate()
+  const nav = useNavigate();
 
   useEffect(() => {
     dispatch(fetchCartQuantityAsync());
-    dispatch(fetchWishlistQuantityAsync())
+    dispatch(fetchWishlistQuantityAsync());
   }, [dispatch]);
 
   // const handleLogout = (e) => {
@@ -73,21 +79,13 @@ const UserActions = () => {
           {wishListCount}
         </span>
       </Link>
-      <Link
-        to="/cart"
-        className="flex items-center text-gray-700 hover:text-gray-900"
-      >
-        <div className="relative">
-          <LuShoppingCart className="h-6 w-6" />
-          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-            {cartCount}
-          </span>
-        </div>
-        <div className="ml-2">
-          <p className="text-xs text-gray-500">Total</p>
-          <p className="text-sm font-medium">$0.00</p>
-        </div>
-      </Link>
+
+      <div className="relative cursor-pointer" onClick={() => setIsCartOpen(true)}>
+        <LuShoppingCart className="h-6 w-6" />
+        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+          {cartCount}
+        </span>
+      </div>
     </div>
   );
 };

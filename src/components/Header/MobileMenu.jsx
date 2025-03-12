@@ -5,7 +5,7 @@ import { FaRegUser, FaRegHeart } from "react-icons/fa6";
 import { RiMailSendLine } from "react-icons/ri";
 import { LuShoppingCart } from "react-icons/lu";
 
-const MobileMenu = ({toggleMenu, navLinks, categories}) => {
+const MobileMenu = ({toggleMenu, navLinks, categories, setIsCartOpen}) => {
   return (
     <div className="fixed inset-0 z-50 bg-white lg:hidden">
       <div className="flex h-16 items-center justify-between px-4">
@@ -57,14 +57,13 @@ const MobileMenu = ({toggleMenu, navLinks, categories}) => {
             </Link>
           </div>
           <div>
-            <Link
-              to="/cart"
+            <div
               className="flex items-center text-base font-medium text-gray-900"
-              onClick={toggleMenu}
+              onClick={() => setIsCartOpen(true)}
             >
               <LuShoppingCart className="mr-3 h-6 w-6 flex-shrink-0" />
               Cart
-            </Link>
+            </div>
           </div>
           <div className="border-t border-gray-200 pt-4">
             <h3 className="text-base font-medium text-gray-900">Categories</h3>

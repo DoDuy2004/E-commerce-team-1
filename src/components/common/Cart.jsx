@@ -15,8 +15,7 @@ import {
 } from "../../redux/slices/cartSlice";
 import toast from "react-hot-toast";
 
-export default function Cart() {
-  const [open, setOpen] = useState(false);
+export default function Cart({ open, setOpen }) {
   const dispatch = useDispatch();
   const { items, totalQuantity, loading, error } = useSelector(
     (state) => state.cart
@@ -62,7 +61,11 @@ export default function Cart() {
       });
   };
 
-  console.log(items)
+  const subtotal = items.reduce(
+    (acc, item) => acc + item.sellingPrice * item.quantity,
+    0
+  );
+  console.log(items);
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-50">
@@ -111,8 +114,12 @@ export default function Cart() {
                               <h3>
                                 <a href={product.href}>{product.name}</a>
                               </h3>
-                              <p className="ml-4">{product.originalPrice}</p>
-                              <p className="ml-4">{product.sellingPrice}</p>
+                              <p className="ml-4 text-gray-500 line-through">
+                                {product.originalPrice}
+                              </p>
+                              <p className=" text-lg font-bold text-red-500">
+                                {product.sellingPrice}
+                              </p>
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {product.attributes
@@ -121,29 +128,42 @@ export default function Cart() {
                             </p>
                             <div className="flex flex-1 items-end justify-between text-sm">
                               <div className="flex items-center gap-2">
-                                <select
-                                  value={product.quantity}
-                                  onChange={(e) =>
-                                    handlUpdateCart(
-                                      product.item_id,
-                                      Number(e.target.value)
-                                    )
-                                  }
-                                  className="px-2 py-1 border border-gray-300 rounded-md text-gray-600"
-                                >
-                                  {[...Array(10)].map((_, i) => (
-                                    <option key={i + 1} value={i + 1}>
-                                      {i + 1}
-                                    </option>
-                                  ))}
-                                </select>
+                                <div className="flex items-center space-x-2">
+                                  <button
+                                    onClick={() =>
+                                      handlUpdateCart(
+                                        product.item_id,
+                                        Math.max(1, product.quantity - 1)
+                                      )
+                                    }
+                                    className="px-2 py-1 border border-gray-300 rounded-md text-gray-600 disabled:opacity-50"
+                                    disabled={product.quantity <= 1} // Prevent going below 1
+                                  >
+                                    −
+                                  </button>
+                                  <span className="px-3 py-1 border border-gray-300 rounded-md text-gray-600">
+                                    {product.quantity}
+                                  </span>
+                                  <button
+                                    onClick={() =>
+                                      handlUpdateCart(
+                                        product.item_id,
+                                        Math.min(10, product.quantity + 1)
+                                      )
+                                    }
+                                    className="px-2 py-1 border border-gray-300 rounded-md text-gray-600 disabled:opacity-50"
+                                    disabled={product.quantity >= 10} // Prevent exceeding max limit
+                                  >
+                                    +
+                                  </button>
+                                </div>
                               </div>
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   handleDeleteItemCart(product.item_id);
                                 }}
-                                className="text-indigo-600 hover:text-indigo-500"
+                                className="text-indigo-600 hover:text-indigo-500 cursor-pointer"
                               >
                                 Remove
                               </button>
@@ -159,7 +179,7 @@ export default function Cart() {
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>$262.00</p>
+                    <p>${subtotal.toFixed(2)}</p>
                   </div>
                   <p className="mt-0.5 text-sm text-gray-500">
                     Shipping and taxes calculated at checkout.
