@@ -4,12 +4,13 @@ import {
   getNewShoesCollection,
   getPopularProduct2023,
   getProductById,
-  getRelatedProduct
+  getRelatedProduct,
 } from "../../services/productService";
 
 const initialState = {
   popularProduct: [],
   furniture: [],
+  relatedProduct: [],
   newShoes: [],
   product: {},
   loading: false,
@@ -48,11 +49,18 @@ export const fetchDetailProduct = createAsyncThunk(
   }
 );
 
-
-  export const fetchRelatedProduct = createAsyncThunk("products/fetchRelatedProduct", async () => {
-    const response = await getRelatedProduct();
-    return response;
-  });
+export const fetchRelatedProduct = createAsyncThunk(
+  "products/fetchRelatedProduct",
+  async (categoryId, { rejectWithValue }) => { 
+    try {
+      const response = await getRelatedProduct(categoryId);
+      console.log("Fetched related products:", response);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch");
+    }
+  }
+);
 
 // Create Slice
 const productSlice = createSlice({
@@ -112,18 +120,18 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-     .addCase(fetchRelatedProduct.pending, (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-        .addCase(fetchRelatedProduct.fulfilled, (state, action) => {
-          state.loading = false;
-          state.newShoes = action.payload;
-        })
-        .addCase(fetchRelatedProduct.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.error.message || "Failed to fetch Related Product";
-        });
+      .addCase(fetchRelatedProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRelatedProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.relatedProduct = action.payload;
+      })
+      .addCase(fetchRelatedProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch Related Product";
+      });
   },
 });
 

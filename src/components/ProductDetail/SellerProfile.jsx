@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchShopInfomation } from "../../redux/slices/productDetailSlice";
 
 const sellerData = {
   logo: "https://down-vn.img.susercontent.com/file/23a7300695934c18cea715a64bdd0e16@resize_w160_nl.webp", // Replace with real logo
@@ -34,28 +36,33 @@ const feedbackData = [
 export const SellerProfile = () => {
   const [isFollow, setIsFollow] = useState(false);
   const nav = useNavigate();
+  const dispatch = useDispatch()
+  const { shopInfomation } = useSelector((state) => state.productDetails || {});
   
+  useEffect(() => {
+    dispatch(fetchShopInfomation())
+  }, [dispatch])
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 max-w-full flex flex-col md:flex-row gap-6">
+    <div className="bg-white shadow-md rounded-lg p-6 max-w-full flex flex-col md:flex-row gap-6 mt-10">
       {/* Left: Seller Info */}
       <div className="md:w-1/3 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-4">
             <img
-              src={sellerData.logo}
-              alt={sellerData.name}
+              src={shopInfomation.logo}
+              alt={shopInfomation.name}
               className="w-16 h-16 rounded-full border border-gray-300"
             />
             <div>
-              <h2 className="text-lg font-semibold">{sellerData.name}</h2>
+              <h2 className="text-lg font-semibold">{shopInfomation.name}</h2>
               <p className="text-sm text-gray-600">
-                {sellerData.positiveFeedback}% positive feedback •{" "}
+                {shopInfomation.followers} followers •{" "}
                 {sellerData.itemsSold} items sold
               </p>
             </div>
           </div>
-          <p className="text-sm text-gray-600 mt-3">{sellerData.description}</p>
+          <p className="text-sm text-gray-600 mt-3">{shopInfomation.description}</p>
         </div>
 
         {/* Buttons */}
@@ -103,7 +110,7 @@ export const SellerProfile = () => {
           Feedback{" "}
           <div className="flex justify-center items-center ml-5 text-orange-500">
             <FaStar size={16} fill="currentColor" />
-            <span className="ml-1 font-medium text-gray-700">4.8 |</span>
+            <span className="ml-1 font-medium text-gray-700">{shopInfomation.rating} |</span>
             <div className="ml-2 px-1 py-0.5 bg-gray-200 rounded text-xs font-medium text-gray-700">
               2222 Sold
             </div>

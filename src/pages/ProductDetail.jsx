@@ -3,16 +3,27 @@ import { ProductDetailInfo } from "../components/ProductDetail/ProductDetailInfo
 import { ProductDetailImage } from "../components/ProductDetail/ProductDetailImage";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDetailProduct } from "../redux/slices/productSlice";
+import {
+  fetchDetailProduct,
+  fetchRelatedProduct,
+} from "../redux/slices/productSlice";
+import { SellerProfile } from "../components/ProductDetail/SellerProfile";
+import AsSeenOn from "../components/ProductDetail/AsSeenOn";
+import { ListProduct } from "../components/Product/ListProduct";
+import SkeletonLoader from "../components/Loader/SkeletionLoader";
 
 export const ProductDetail = () => {
   const [productData, setProductData] = useState(null);
+  const [categoryId, setCategoryId] = useState(null);
   const [selectedAttributes, setSelectedAttributes] = useState({}); // Thuộc tính đã chọn
   const [selectedVariant, setSelectedVariant] = useState(null); // Biến thể được chọn
   const [attributes, setAttributes] = useState([]); // Danh sách thuộc tính
   const { id } = useParams();
   const dispatch = useDispatch();
   const { product, loading, error } = useSelector(
+    (state) => state.products || {}
+  );
+  const { product, relatedProduct, loading, error } = useSelector(
     (state) => state.products || {}
   );
 
@@ -43,6 +54,8 @@ export const ProductDetail = () => {
   useEffect(() => {
     if (product.variants && product.variants.length > 0) {
       setProductData(product);
+      // console.log(product)
+
       // Tạo danh sách thuộc tính từ các biến thể
       const groupedAttributes = extractAttributes(product.variants);
 
@@ -76,29 +89,60 @@ export const ProductDetail = () => {
     setSelectedAttributes(newAttributes);
   };
 
+  useEffect(() => {
+    if (productData) {
+      setCategoryId(productData.productData.category_id);
+    }
+  }, [productData]);
+
+  useEffect(() => {
+    if (categoryId) {
+      console.log("Fetching related products for category:", categoryId);
+      dispatch(fetchRelatedProduct(categoryId));
+    }
+  }, [categoryId, dispatch]);
+
   if (!productData) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center my-50">
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   return (
     <div className="container mx-auto py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <ProductDetailImage
-          images={
-            selectedVariant
-              ? selectedVariant.images
-              : productData.productData.images
-          }
-        />
-        <ProductDetailInfo
-          product={productData.productData}
-          variants={productData.variants}
-          attributes={attributes}
-          onAttributesChange={handleAttributesChange}
-          selectedAttributes={selectedAttributes}
-          selectedVariant={selectedVariant}
-        />
+      <div className="grid grid-cols-1 md:grid-cols-3 mt-15 md:mt-0">
+        <div className="md:col-span-2">
+          <ProductDetailImage
+            images={
+              selectedVariant
+                ? selectedVariant.images
+                : productData.productData.images
+            }
+          />
+        </div>
+        <div className="md:col-span-1">
+          <ProductDetailInfo
+            product={productData.productData}
+            variants={productData.variants}
+            attributes={attributes}
+            onAttributesChange={handleAttributesChange}
+            selectedAttributes={selectedAttributes}
+            selectedVariant={selectedVariant}
+          />
+        </div>
       </div>
+      <div className="flex flex-col justify-center items-center db-content">
+        <p
+          dangerouslySetInnerHTML={{
+            __html: productData.productData.description,
+          }}
+        ></p>
+      </div>
+      <SellerProfile />
+      <ListProduct title={"Related Product"} productList={relatedProduct} />
+      <AsSeenOn />
     </div>
   );
 };

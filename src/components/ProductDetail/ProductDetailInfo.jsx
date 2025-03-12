@@ -139,7 +139,6 @@ export const ProductDetailInfo = ({
       )}
       <div className="w-full px-2 py-3 bg-[#eeebed] text-[#454244] font-semibold rounded-md">
         <h4>{product.name} Specifications</h4>
-        <p dangerouslySetInnerHTML={{ __html: product.description }}></p>
       </div>
       <div className="w-full">
         <span className="block mb-2">Delivery on March 5th-11th</span>
