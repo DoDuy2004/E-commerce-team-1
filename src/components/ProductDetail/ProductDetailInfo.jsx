@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { TbInfoHexagon } from "react-icons/tb";
-import { CiHeart } from "react-icons/ci";
 import { BsTicketPerforated } from "react-icons/bs";
 import { FaCheckCircle, FaHeart, FaRegHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
 import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
 import { useNavigate } from "react-router-dom";
+import { addToCartAsync } from "../../redux/slices/cartSlice";
+import { toast, Toaster } from "react-hot-toast";
 
 export const ProductDetailInfo = ({
   product,
@@ -18,11 +18,14 @@ export const ProductDetailInfo = ({
 }) => {
   // console.log(product)
   const [liked, setLiked] = useState(product?.wishlist || false);
+  const nav = useNavigate();
+  const dispatch = useDispatch();
+  const [isSelected, setIsSelected] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     setLiked(product?.wishlist || false);
   }, [product]);
-  const dispatch = useDispatch();
   // const cartLoading = useSelector((state) => state.cart.loading);
 
   const handleAddToWishList = async (productId) => {
@@ -37,8 +40,6 @@ export const ProductDetailInfo = ({
         toast.error(err);
       });
   };
-
-  const nav = useNavigate();
   // Xử lý chọn/bỏ chọn thuộc tính
 
   const handleAttributeSelect = (type, value) => {
@@ -72,7 +73,24 @@ export const ProductDetailInfo = ({
     return compatibleValues;
   };
 
-  console.log(selectedVariant)
+  // console.log(selectedVariant);
+  console.log(product);
+
+  const handleAddToCart = async (variantId) => {
+    setIsSelected(true);
+    if (!variantId) {
+      return;
+    }
+    dispatch(addToCartAsync({ variantId, quantity: 1 }))
+      .unwrap()
+      .then(() => {
+        toast.success("Added to cart!");
+      })
+      .catch((err) => {
+        console.error("Add to Cart Failed:", err);
+        toast.error(err);
+      });
+  };
 
   const handleBuyNow = () => {
     if (!selectedVariant) {
@@ -84,6 +102,7 @@ export const ProductDetailInfo = ({
 
   return (
     <div className="flex flex-col gap-4">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="pt-4">
         <div className="flex justify-between text-2xl font-semibold text-[#444143]">
           <h2>{product?.name}</h2>
@@ -129,7 +148,7 @@ export const ProductDetailInfo = ({
                 <li
                   key={index}
                   className={`py-2 px-5 border-2 ${
-                    isSelected
+                    isSelected || variants.length === 1
                       ? "border-pink-500"
                       : isCompatible
                       ? "border-[#ada9ab] hover:border-pink-500"
@@ -146,6 +165,11 @@ export const ProductDetailInfo = ({
           </ul>
         </div>
       ))}
+      {isSelected && !selectedVariant && (
+        <p className="text-red-500">
+          Please select all required options before adding to cart.
+        </p>
+      )}
 
       {selectedVariant && (
         <div className="w-full">
@@ -167,8 +191,31 @@ export const ProductDetailInfo = ({
       <div className="w-full px-2 py-3 bg-[#eeebed] text-[#454244] font-semibold rounded-md">
         <h4>{product?.name} Specifications</h4>
       </div>
-      <div className="w-full">
+      <div className="w-full flex flex-col gap-4">
         <span className="block mb-2">Delivery on March 5th-11th</span>
+        <div class="flex items-center gap-5">
+          <span>Quantity: </span>
+          <div className="text-[#a4aaaf]">
+            <button
+              className="bg-[#f7f7f7] w-10 font-semibold py-1 border-r-0"
+              onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
+            >
+              -
+            </button>
+            <input
+              className="w-10 border-1 border-[#f7f7f7] text-black text-center py-[3px]"
+              type="text"
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+            />
+            <button
+              className="bg-[#f7f7f7]  w-10 py-1 font-semibold border-l-0"
+              onClick={() => setQuantity((prev) => prev + 1)}
+            >
+              +
+            </button>
+          </div>
+        </div>
         <div className="flex gap-2">
           <button
             disabled={selectedVariant && selectedVariant.stock === 0}
@@ -182,12 +229,13 @@ export const ProductDetailInfo = ({
             Buy now
           </button>
           <button
-            disabled={selectedVariant && selectedVariant.stock === 0}
+            // disabled={selectedVariant && selectedVariant.stock === 0}
             className={`${
               selectedVariant && selectedVariant.stock === 0
                 ? "cursor-not-allowed opacity-50"
                 : ""
             } w-4/9 bg-[#2e2b2d] text-[#c2c0c1] py-3 rounded-md text-xl cursor-pointer hover:bg-[#3f3b3e]`}
+            onClick={() => handleAddToCart(selectedVariant?._id, quantity)}
           >
             Add to cart
           </button>
