@@ -24,7 +24,7 @@ const WishlistItem = ({ product, onRemove, onAddToCart }) => {
       </div>
       <div className="flex gap-3 lg:gap-10">
         <button
-          onClick={() => onAddToCart(product)}
+          onClick={() => onAddToCart(product.variantDefault)}
           className="text-xs md:text-sm lg:text-lg bg-black text-white px-4 py-2 rounded-md hover:bg-gray-500 transition cursor-pointer"
         >
           <MdOutlineShoppingCart />

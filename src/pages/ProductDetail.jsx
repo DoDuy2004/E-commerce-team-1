@@ -52,18 +52,27 @@ export const ProductDetail = () => {
     if (product.variants && product.variants.length > 0) {
       setProductData(product);
       // console.log(product)
-
       // Tạo danh sách thuộc tính từ các biến thể
       const groupedAttributes = extractAttributes(product.variants);
 
       setAttributes(groupedAttributes);
 
-      console.log(groupedAttributes);
+      // console.log(groupedAttributes);
     }
   }, [product]);
 
   useEffect(() => {
-    if (product && Object.keys(selectedAttributes).length > 0) {
+    if (product && product.variants?.length === 1) {
+      setSelectedVariant(product.variants[0]);
+      return;
+    }
+
+    if (
+      product &&
+      product.variants &&
+      Object.keys(selectedAttributes).length ===
+        product.variants[0]?.attributes?.length
+    ) {
       const compatibleVariants = product.variants.filter((v) =>
         Object.entries(selectedAttributes).every(([type, value]) =>
           v.attributes.some(

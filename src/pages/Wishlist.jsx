@@ -7,6 +7,7 @@ import {
 } from "../redux/slices/wishListSlice";
 import "react-toastify/dist/ReactToastify.css";
 import toast, { Toaster } from "react-hot-toast";
+import { addToCartAsync } from "../redux/slices/cartSlice";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -17,11 +18,20 @@ const Wishlist = () => {
     dispatch(fetchWishlistAsync()); // Gọi API lấy danh sách wishlist
   }, [dispatch]);
 
-  console.log(wishlistItems);
+  // console.log(wishlistItems);
 
-  const handleAddToCart = () => {
-    return 1;
+  const handleAddToCart = async (variantId) => {
+    dispatch(addToCartAsync({ variantId, quantity: 1 }))
+      .unwrap()
+      .then(() => {
+        toast.success("Added to cart!");
+      })
+      .catch((err) => {
+        console.error("Add to Cart Failed:", err);
+        toast.error(err);
+      });
   };
+
   const handleRemove = async (productId) => {
     dispatch(addToWishlistAsync({ productId, status: false }))
       .unwrap()
