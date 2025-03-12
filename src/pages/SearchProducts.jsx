@@ -35,11 +35,12 @@ const SearchProducts = () => {
           <p className="mb-5">
             Search results for <span className="font-semibold">{keyword}</span>.
           </p>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
-            {products &&
-              products.map((item, index) => {
-                return <ProductCard key={index} product={item} />;
-              })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {products.map((item, index) => (
+              <div key={index} className="relative w-full">
+                <ProductCard product={item} />
+              </div>
+            ))}
           </div>
         </>
       ) : (

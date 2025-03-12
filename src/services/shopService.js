@@ -1,9 +1,9 @@
 import axios from "axios";
 import { API_URL } from "./API";
 
-export const getShopInfo = async () => {
+export const getShopInfo = async (shopId) => {
   try {
-    const response = await axios.get(`${API_URL}shops/67cffefacac2301d4f074aad`);
+    const response = await axios.get(`${API_URL}shops/${shopId}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching ads:", error);

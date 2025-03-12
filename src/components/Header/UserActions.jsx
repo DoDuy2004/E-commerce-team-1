@@ -21,30 +21,29 @@ const UserActions = () => {
     dispatch(fetchWishlistQuantityAsync())
   }, [dispatch]);
 
-  const handleLogout = (e) => {
-    e.preventDefault()
-    localStorage.clear()
-    dispatch(resetCartState());
-    dispatch(resetWishlistState())
-    window.location.reload();
+  // const handleLogout = (e) => {
+  //   e.preventDefault()
+  //   localStorage.clear()
+  //   dispatch(resetCartState());
+  //   dispatch(resetWishlistState())
+  //   window.location.reload();
 
-    nav('/')
-    toast.success("Logout success")
-  }
+  //   nav('/')
+  //   toast.success("Logout success")
+  // }
 
   return (
     <div className="hidden lg:order-3 lg:flex lg:items-center lg:space-x-6">
       {username ? (
         <>
           <Link
-            to="/"
-            onClick={handleLogout}
+            to="/profile"
             className="flex items-center text-gray-700 hover:text-gray-900"
           >
             <FaRegUser className="h-6 w-6" />
             <div className="ml-2">
               <p className="text-xs text-gray-500">{username}</p>
-              <p className="text-sm font-medium">Logout</p>
+              {/* <p className="text-sm font-medium">Logout</p> */}
             </div>
           </Link>
         </>
