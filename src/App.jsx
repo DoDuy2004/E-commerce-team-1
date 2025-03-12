@@ -15,6 +15,8 @@ import CustomerServices from "./pages/CustomerServices";
 import Blog from "./pages/Blog";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import { Profile } from "./pages/Profile";
+import Cart from "./components/common/Cart";
 import Checkout from "./pages/Checkout";
 import Wishlist from "./pages/Wishlist";
 
@@ -26,6 +28,7 @@ function App() {
     <div className={isAuthPage ? "w-full min-h-screen" : ""}>
       {!isAuthPage && <Header />}
       <ScrollToTop />
+      <Cart/>
       <div className={isAuthPage ? "w-full" : "px-5 lg:px-20"}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -40,6 +43,7 @@ function App() {
           <Route path="/white-page" element={<WhitePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/wishlist" element={<Wishlist />} />
         </Routes>
       </div>

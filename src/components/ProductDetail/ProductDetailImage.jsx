@@ -3,19 +3,34 @@ import { FaChevronLeft, FaChevronRight, FaExpand } from "react-icons/fa";
 import { FullScreenGallery } from "./FullScreenGallery";
 import ModelSizeInfo from "../common/ModelSizeInfo";
 
+// const images = [
+//   "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
+//   "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
+//   "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
+//   "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
+//   "https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-03.jpg",
+// ];
 
-const images = [
-  "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg",
-  "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg",
-  "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg",
-  "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg",
-  "https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-03.jpg",
-];
-
-export const ProductDetailImage = () => {
+export const ProductDetailImage = ({ images, variants, selectedAttributes, selectedVariant}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [zoom, setZoom] = useState(false);
+  // console.log(images)
+  // console.log(product)
+  // console.log(variants)
+  console.log(selectedAttributes)
+  // console.log(selectedVariant)
+
+  const getMatchedVariant = () => {
+    return variants.find((variant) =>
+      Object.entries(selectedAttributes).every(([type, value]) =>
+        variant.attributes.some(attr => attr.type === type && attr.value === value)
+      )
+    );
+  };
+  
+  const matchedVariant = getMatchedVariant();
+  // console.log("Matched Variant:", matchedVariant.images);
 
   const prevImage = () => currentIndex > 0 && setCurrentIndex(currentIndex - 1);
   const nextImage = () =>
@@ -23,6 +38,8 @@ export const ProductDetailImage = () => {
   const openFullScreen = () => setIsFullScreen(true);
   const closeFullScreen = () => setIsFullScreen(false);
   const toggleZoom = () => setZoom(!zoom);
+
+  console.log(currentIndex)
 
   return (
     <div className="flex flex-col-reverse sm:flex-row lg:flex-row justify-center items-start gap-4 p-4">
@@ -44,7 +61,7 @@ export const ProductDetailImage = () => {
       {/* Main Image */}
       <div className="relative w-full max-w-[700px] sm:w-[700px] h-auto flex items-center justify-center overflow-hidden">
         <img
-          src={images[currentIndex]}
+          src={Object.keys(selectedAttributes).length > 0 ? matchedVariant.images : images[currentIndex]}
           alt="Product"
           className={`w-full h-auto max-h-[500px] object-contain cursor-zoom-in transition-transform bg-gray-100 duration-300 ${
             zoom ? "scale-150" : "scale-100"
@@ -52,12 +69,10 @@ export const ProductDetailImage = () => {
           onClick={toggleZoom}
         />
 
-        {/* Model Size Info */}
         <div className="absolute top-4 left-4">
           <ModelSizeInfo />
         </div>
 
-        {/* Zoom Button */}
         <button
           className="absolute top-2 right-2 bg-white p-2 rounded-full shadow"
           onClick={openFullScreen}
@@ -89,6 +104,7 @@ export const ProductDetailImage = () => {
         <FullScreenGallery
           currentIndexs={currentIndex}
           onClose={closeFullScreen}
+          images={images}
         />
       )}
     </div>

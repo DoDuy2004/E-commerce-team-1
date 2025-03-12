@@ -10,8 +10,8 @@ const initialState = {
 
 export const fetchShopInfomation = createAsyncThunk(
     "productDetails/fetchShopInfomation",
-    async () => {
-      const response = await getShopInfo();
+    async (shopId) => {
+      const response = await getShopInfo(shopId);
       return response.data;
     }
   );
