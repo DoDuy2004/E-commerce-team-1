@@ -7,12 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCartQuantityAsync,
-  resetCartState,
 } from "../../redux/slices/cartSlice";
 import toast from "react-hot-toast";
 import {
   fetchWishlistQuantityAsync,
-  resetWishlistState,
 } from "../../redux/slices/wishListSlice";
 
 const UserActions = ({ setIsCartOpen }) => {

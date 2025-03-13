@@ -14,8 +14,8 @@ export const ProductCard = ({ product }) => {
   // const cartLoading = useSelector((state) => state.cart.loading);
 
   useEffect(() => {
-      setLiked(product?.wishlist || false);
-    }, [product]);
+    setLiked(product?.wishlist || false);
+  }, [product]);
 
   const handleAddToCart = async (variantId) => {
     dispatch(addToCartAsync({ variantId, quantity: 1 }))
@@ -30,19 +30,29 @@ export const ProductCard = ({ product }) => {
   };
 
   const handleAddToWishList = async (productId) => {
-    dispatch(addToWishlistAsync({ productId, status: !liked }))
+    const newLiked = !liked;
+    setLiked(newLiked);
+
+    dispatch(addToWishlistAsync({ productId, status: newLiked }))
       .unwrap()
       .then(() => {
-        setLiked(!liked);
-        toast.success(!liked ? "Added to Wishlist!" : "Removed from Wishlist!");
+        // toast.success(
+        //   newLiked ? "Added to Wishlist!" : "Removed from Wishlist!"
+        // );
       })
       .catch((err) => {
         console.error("Add To Wish List Failed: ", err);
-        toast.error(err);
+
+        if (err === 400) {
+          toast.error("Please login!!!");
+          nav("/login");
+        } else {
+          toast.error(err);
+        }
+
+        setLiked(!newLiked);
       });
   };
-  
-
 
   return (
     <div
@@ -98,12 +108,22 @@ export const ProductCard = ({ product }) => {
           </div>
 
           <div>
-            <span className="text-gray-400 line-through text-xl ">
-              ${product.original_price}
-            </span>
-            <span className="font-bold text-xl  ml-3">
-              ${product.selling_price}
-            </span>
+            {product.original_price === product.selling_price ? (
+              <>
+                <span className="font-bold text-xl  ml-3">
+                  ${product.selling_price}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-gray-400 line-through text-xl ">
+                  ${product.original_price}
+                </span>
+                <span className="font-bold text-xl  ml-3">
+                  ${product.selling_price}
+                </span>
+              </>
+            )}
           </div>
         </div>
 

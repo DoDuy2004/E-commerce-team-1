@@ -29,7 +29,7 @@ function App() {
       {!isAuthPage && <Header />}
       <ScrollToTop />
       {/* <Cart/> */}
-      <div className={isAuthPage ? "w-full" : "px-5 lg:px-20"}>
+      <div className={isAuthPage ? "w-full" : "px-2 lg:px-20"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/today-deals" element={<TodayDeals />} />
