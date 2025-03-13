@@ -148,12 +148,16 @@ export const cartSlice = createSlice({
     error: null,
   },
   reducers: {
-    updateItemLocally: (state, action) => {
-      const { item_id, quantity } = action.payload;
-      const item = state.items.find((item) => item.id === item_id);
+    addItemLocally: (state, action) => {
+      const { variantId, quantity } = action.payload;
+      const item = state.items.find((i) => i.variantId === variantId);
+  
       if (item) {
-        item.quantity = quantity;
+        item.quantity += quantity;
+      } else {
+        state.items.push({ variantId, quantity });
       }
+      state.totalQuantity += quantity;
     },
     removeItemLocally: (state, action) => {
       state.items = state.items.filter(item => item.variantId !== action.payload);

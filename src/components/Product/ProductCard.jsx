@@ -6,11 +6,14 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addToCartAsync } from "../../redux/slices/cartSlice";
 import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
+import SkeletonLoader from "../Loader/SkeletionLoader";
+
 
 export const ProductCard = ({ product }) => {
   const [liked, setLiked] = useState(product?.wishlist || false);
   const nav = useNavigate();
   const dispatch = useDispatch();
+  const [isAdding, setIsAdding] = useState(false);
   // const cartLoading = useSelector((state) => state.cart.loading);
 
   useEffect(() => {
@@ -18,10 +21,12 @@ export const ProductCard = ({ product }) => {
   }, [product]);
 
   const handleAddToCart = async (variantId) => {
+    setIsAdding(true);
     dispatch(addToCartAsync({ variantId, quantity: 1 }))
       .unwrap()
       .then(() => {
         toast.success("Added to cart!");
+        setIsAdding(false);
       })
       .catch((err) => {
         console.error("Add to Cart Failed:", err);
@@ -110,7 +115,7 @@ export const ProductCard = ({ product }) => {
           <div>
             {product.original_price === product.selling_price ? (
               <>
-                <span className="font-bold text-xl  ml-3">
+                <span className="font-bold text-xl ml-3">
                   ${product.selling_price}
                 </span>
               </>
@@ -135,7 +140,7 @@ export const ProductCard = ({ product }) => {
           }}
         >
           <span className="text-base">
-            <FaPlus />
+            {isAdding ? <SkeletonLoader/>: <FaPlus /> }
           </span>
         </button>
       </div>
