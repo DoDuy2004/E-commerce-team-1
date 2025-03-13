@@ -7,11 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCartQuantityAsync,
+  resetCartState,
 } from "../../redux/slices/cartSlice";
 import toast from "react-hot-toast";
 import {
   fetchWishlistQuantityAsync,
+  resetWishlistState,
 } from "../../redux/slices/wishListSlice";
+import { BiLogOutCircle } from "react-icons/bi";
+import { FiLogOut } from "react-icons/fi";
 
 const UserActions = ({ setIsCartOpen }) => {
   const username = JSON.parse(localStorage.getItem("username"));
@@ -25,16 +29,16 @@ const UserActions = ({ setIsCartOpen }) => {
     dispatch(fetchWishlistQuantityAsync());
   }, [dispatch]);
 
-  // const handleLogout = (e) => {
-  //   e.preventDefault()
-  //   localStorage.clear()
-  //   dispatch(resetCartState());
-  //   dispatch(resetWishlistState())
-  //   window.location.reload();
+  const handleLogout = (e) => {
+    e.preventDefault()
+    localStorage.clear()
+    dispatch(resetCartState());
+    dispatch(resetWishlistState())
+    window.location.reload();
 
-  //   nav('/')
-  //   toast.success("Logout success")
-  // }
+    nav('/')
+    toast.success("Logout success")
+  }
 
   return (
     <div className="hidden lg:order-3 lg:flex lg:items-center lg:space-x-6">
@@ -64,9 +68,9 @@ const UserActions = ({ setIsCartOpen }) => {
             </div>
           </Link>
         </>
-      )}
-      <Link to="/white-page" className="text-gray-700 hover:text-gray-900">
-        <RiMailSendLine className="h-6 w-6" />
+      )} 
+      <Link className="text-gray-700 hover:text-gray-900" onClick={handleLogout}>
+        <FiLogOut  className="h-6 w-6" />
       </Link>
       <Link
         to="/wishlist"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSearch } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getSuggestions } from "../../services/productService";
 
 const Searchbar = ({ categories }) => {
@@ -15,6 +15,7 @@ const Searchbar = ({ categories }) => {
   const nav = useNavigate();
   const inputRef = useRef();
   const dropdownRef = useRef(null);
+  const location = useLocation();
 
   const handleDropDown = () => {
     if (searchByProduct.trim()) {
@@ -60,7 +61,7 @@ const Searchbar = ({ categories }) => {
 
   const handleSearchProduct = (keyword = "") => {
     setSuggestions([]);
-    const searchTerm = keyword.trim() ? keyword.trim() : searchByProduct.trim();
+    const searchTerm = keyword.trim() || searchByProduct.trim();
 
     if (!searchTerm) {
       setRequired(true);
@@ -68,11 +69,22 @@ const Searchbar = ({ categories }) => {
       return;
     }
     setRequired(false);
-
     if (keyword.trim()) {
-      setSearchByProduct((prev) => keyword.trim());
+      setSearchByProduct(keyword.trim());
     }
-    nav(`/search?keyword=${searchTerm}&categoryID=${searchByCategoryID}`);
+
+    // Create a new URL object to modify query params
+    const params = new URLSearchParams(location.search);
+    params.set("keyword", searchTerm);
+
+    // Only update categoryID if it has changed
+    if (searchByCategoryID) {
+      params.set("categoryID", searchByCategoryID);
+    } else {
+      params.delete("categoryID"); // Remove category if not set
+    }
+
+    nav(`/search?${params.toString()}`);
   };
 
   const handleCategorySelect = (category, categoryID, event) => {
@@ -82,7 +94,7 @@ const Searchbar = ({ categories }) => {
     setSearchByCategoryID((prev) => categoryID);
   };
 
-  // console.log(searchByProduct);
+  console.log(searchByCategoryID);
 
   return (
     <div className="order-3 mt-4 lg:order-2 sm:w-full lg:mt-0 lg:flex lg:w-[40%] xl:w-[50%]">
@@ -104,7 +116,10 @@ const Searchbar = ({ categories }) => {
           {searchByProduct && (
             <IoClose
               className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 cursor-pointer hover:text-gray-700 transition"
-              onClick={() => setSearchByProduct("")}
+              onClick={() => {
+                setSearchByProduct("");
+                setSearchByCategoryID("");
+              }}
             />
           )}
         </div>

@@ -65,7 +65,6 @@ export default function Cart({ open, setOpen }) {
     (acc, item) => acc + item.sellingPrice * item.quantity,
     0
   );
-  console.log(items);
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-50">
@@ -114,12 +113,23 @@ export default function Cart({ open, setOpen }) {
                               <h3>
                                 <a href={product.href}>{product.name}</a>
                               </h3>
-                              <p className="ml-4 text-gray-500 line-through">
-                                {product.originalPrice}
-                              </p>
-                              <p className=" text-lg font-bold text-red-500">
-                                {product.sellingPrice}
-                              </p>
+                              {product.originalPrice ===
+                              product.sellingPrice ? (
+                                <>
+                                  <p className=" text-lg font-bold text-black">
+                                    ${product.sellingPrice}
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="ml-4 text-gray-500 line-through">
+                                    ${product.originalPrice}
+                                  </p>
+                                  <p className="text-lg font-bold text-black ml-1">
+                                    ${product.sellingPrice}
+                                  </p>
+                                </>
+                              )}
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {product.attributes

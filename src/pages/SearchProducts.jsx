@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getProducts } from "../services/productService";
 import { ProductCard } from "../components/Product/ProductCard";
+import { Toaster } from "react-hot-toast";
 
 const SearchProducts = () => {
   const [products, setProducts] = useState([]);
@@ -24,6 +25,8 @@ const SearchProducts = () => {
   console.log(products);
   return (
     <div className="py-10 mt-10 lg:mt-0">
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className=" mb-5 text-center leading-10">
         <h2 className="font-semibold text-4xl">Search</h2>
         <span>There are {products.length} products for search</span>
