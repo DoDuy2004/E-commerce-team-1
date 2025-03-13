@@ -23,6 +23,8 @@ export default function Cart({ open, setOpen }) {
     (state) => state.cart
   );
 
+  console.log(items);
+
   useEffect(() => {
     dispatch(fetchCartListAsync());
   }, [dispatch]);
@@ -153,7 +155,7 @@ export default function Cart({ open, setOpen }) {
                             <p className="mt-1 text-sm text-gray-500">
                               {product.attributes
                                 .map((item) => item.value)
-                                .join(" ")}
+                                .join(" ")}n s 
                             </p>
                             <div className="flex flex-1 items-end justify-between text-sm">
                               <div className="flex items-center gap-2">
