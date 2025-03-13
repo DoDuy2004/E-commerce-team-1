@@ -14,6 +14,8 @@ import {
   fetchWishlistQuantityAsync,
   resetWishlistState,
 } from "../../redux/slices/wishListSlice";
+import { BiLogOutCircle } from "react-icons/bi";
+import { FiLogOut } from "react-icons/fi";
 
 const UserActions = ({ setIsCartOpen }) => {
   const username = JSON.parse(localStorage.getItem("username"));
@@ -27,16 +29,16 @@ const UserActions = ({ setIsCartOpen }) => {
     dispatch(fetchWishlistQuantityAsync());
   }, [dispatch]);
 
-  // const handleLogout = (e) => {
-  //   e.preventDefault()
-  //   localStorage.clear()
-  //   dispatch(resetCartState());
-  //   dispatch(resetWishlistState())
-  //   window.location.reload();
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    dispatch(resetCartState());
+    dispatch(resetWishlistState());
+    window.location.reload();
 
-  //   nav('/')
-  //   toast.success("Logout success")
-  // }
+    nav("/");
+    toast.success("Logout success");
+  };
 
   return (
     <div className="hidden lg:order-3 lg:flex lg:items-center lg:space-x-6">
@@ -67,9 +69,16 @@ const UserActions = ({ setIsCartOpen }) => {
           </Link>
         </>
       )}
-      <Link to="/white-page" className="text-gray-700 hover:text-gray-900">
-        <RiMailSendLine className="h-6 w-6" />
-      </Link>
+      {username ? (
+        <Link
+          className="text-gray-700 hover:text-gray-900"
+          onClick={handleLogout}
+        >
+          <FiLogOut className="h-6 w-6" />
+        </Link>
+      ) : (
+        <></>
+      )}
       <Link
         to="/wishlist"
         className="relative text-gray-700 hover:text-gray-900"
@@ -80,7 +89,10 @@ const UserActions = ({ setIsCartOpen }) => {
         </span>
       </Link>
 
-      <div className="relative cursor-pointer" onClick={() => setIsCartOpen(true)}>
+      <div
+        className="relative cursor-pointer"
+        onClick={() => setIsCartOpen(true)}
+      >
         <LuShoppingCart className="h-6 w-6" />
         <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs text-white">
           {cartCount}

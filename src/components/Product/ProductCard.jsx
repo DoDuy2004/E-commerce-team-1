@@ -6,22 +6,27 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addToCartAsync } from "../../redux/slices/cartSlice";
 import { addToWishlistAsync } from "../../redux/slices/wishListSlice";
+import SkeletonLoader from "../Loader/SkeletionLoader";
+
 
 export const ProductCard = ({ product }) => {
   const [liked, setLiked] = useState(product?.wishlist || false);
   const nav = useNavigate();
   const dispatch = useDispatch();
+  const [isAdding, setIsAdding] = useState(false);
   // const cartLoading = useSelector((state) => state.cart.loading);
 
   useEffect(() => {
-      setLiked(product?.wishlist || false);
-    }, [product]);
+    setLiked(product?.wishlist || false);
+  }, [product]);
 
   const handleAddToCart = async (variantId) => {
+    setIsAdding(true);
     dispatch(addToCartAsync({ variantId, quantity: 1 }))
       .unwrap()
       .then(() => {
         toast.success("Added to cart!");
+        setIsAdding(false);
       })
       .catch((err) => {
         console.error("Add to Cart Failed:", err);
@@ -30,19 +35,29 @@ export const ProductCard = ({ product }) => {
   };
 
   const handleAddToWishList = async (productId) => {
-    dispatch(addToWishlistAsync({ productId, status: !liked }))
+    const newLiked = !liked;
+    setLiked(newLiked);
+
+    dispatch(addToWishlistAsync({ productId, status: newLiked }))
       .unwrap()
       .then(() => {
-        setLiked(!liked);
-        toast.success(!liked ? "Added to Wishlist!" : "Removed from Wishlist!");
+        // toast.success(
+        //   newLiked ? "Added to Wishlist!" : "Removed from Wishlist!"
+        // );
       })
       .catch((err) => {
         console.error("Add To Wish List Failed: ", err);
-        toast.error(err);
+
+        if (err === 400) {
+          toast.error("Please login!!!");
+          nav("/login");
+        } else {
+          toast.error(err);
+        }
+
+        setLiked(!newLiked);
       });
   };
-  
-
 
   return (
     <div
@@ -98,12 +113,22 @@ export const ProductCard = ({ product }) => {
           </div>
 
           <div>
-            <span className="text-gray-400 line-through text-xl ">
-              ${product.original_price}
-            </span>
-            <span className="font-bold text-xl  ml-3">
-              ${product.selling_price}
-            </span>
+            {product.original_price === product.selling_price ? (
+              <>
+                <span className="font-bold text-xl ml-3">
+                  ${product.selling_price}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-gray-400 line-through text-xl ">
+                  ${product.original_price}
+                </span>
+                <span className="font-bold text-xl  ml-3">
+                  ${product.selling_price}
+                </span>
+              </>
+            )}
           </div>
         </div>
 
@@ -115,7 +140,7 @@ export const ProductCard = ({ product }) => {
           }}
         >
           <span className="text-base">
-            <FaPlus />
+            {isAdding ? <SkeletonLoader/>: <FaPlus /> }
           </span>
         </button>
       </div>

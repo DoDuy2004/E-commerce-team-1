@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -14,9 +14,11 @@ import {
   updateItemQuantityCartAsync,
 } from "../../redux/slices/cartSlice";
 import toast from "react-hot-toast";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export default function Cart({ open, setOpen }) {
   const dispatch = useDispatch();
+  const [quantities, setQuantities] = useState({});
   const { items, totalQuantity, loading, error } = useSelector(
     (state) => state.cart
   );
@@ -26,6 +28,15 @@ export default function Cart({ open, setOpen }) {
   useEffect(() => {
     dispatch(fetchCartListAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    setQuantities(
+      items.reduce((acc, item) => {
+        acc[item.item_id] = item.quantity;
+        return acc;
+      }, {})
+    );
+  }, [items]);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
@@ -39,16 +50,25 @@ export default function Cart({ open, setOpen }) {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const handlUpdateCart = async (item_id, quantity) => {
-    dispatch(updateItemQuantityCartAsync({ item_id, quantity }))
-      .unwrap()
-      .then(() => {
-        toast.success("Cart updated!");
-      })
-      .catch((err) => {
-        console.error("Update Cart Failed:", err);
-        toast.error(err);
-      });
+  const debouncedQuantities = useDebounce(quantities, 500);
+
+  useEffect(() => {
+    Object.entries(debouncedQuantities).forEach(([item_id, quantity]) => {
+      const originalItem = items.find((item) => item.item_id === item_id);
+      if (originalItem && originalItem.quantity !== quantity) {
+        dispatch(updateItemQuantityCartAsync({ item_id, quantity }))
+          .unwrap()
+          .then(() => toast.success("Cart updated!"))
+          .catch((err) => toast.error(err));
+      }
+    });
+  }, [debouncedQuantities, dispatch]);
+
+  const handleQuantityChange = (item_id, newQuantity) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [item_id]: Math.max(1, Math.min(10, newQuantity)), // Limit between 1 and 10
+    }));
   };
 
   const handleDeleteItemCart = async (item_id) => {
@@ -58,7 +78,6 @@ export default function Cart({ open, setOpen }) {
         toast.success("Cart deleted!");
       })
       .catch((err) => {
-        console.error("Update Cart Failed:", err);
         toast.error(err);
       });
   };
@@ -67,7 +86,6 @@ export default function Cart({ open, setOpen }) {
     (acc, item) => acc + item.sellingPrice * item.quantity,
     0
   );
-  console.log(items);
 
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-50">
@@ -116,12 +134,23 @@ export default function Cart({ open, setOpen }) {
                               <h3>
                                 <a href={product.href}>{product.name}</a>
                               </h3>
-                              <p className="ml-4 text-gray-500 line-through">
-                                {product.originalPrice}
-                              </p>
-                              <p className=" text-lg font-bold text-red-500">
-                                {product.sellingPrice}
-                              </p>
+                              {product.originalPrice ===
+                              product.sellingPrice ? (
+                                <>
+                                  <p className=" text-lg font-bold text-black">
+                                    ${product.sellingPrice}
+                                  </p>
+                                </>
+                              ) : (
+                                <>
+                                  <p className="ml-4 text-gray-500 line-through">
+                                    ${product.originalPrice}
+                                  </p>
+                                  <p className="text-lg font-bold text-black ml-2">
+                                    ${product.sellingPrice}
+                                  </p>
+                                </>
+                              )}
                             </div>
                             <p className="mt-1 text-sm text-gray-500">
                               {product.attributes
@@ -133,28 +162,28 @@ export default function Cart({ open, setOpen }) {
                                 <div className="flex items-center space-x-2">
                                   <button
                                     onClick={() =>
-                                      handlUpdateCart(
+                                      handleQuantityChange(
                                         product.item_id,
-                                        Math.max(1, product.quantity - 1)
+                                        quantities[product.item_id] - 1
                                       )
                                     }
                                     className="px-2 py-1 border border-gray-300 rounded-md text-gray-600 disabled:opacity-50"
-                                    disabled={product.quantity <= 1} // Prevent going below 1
+                                    disabled={quantities[product.item_id] <= 1}
                                   >
                                     −
                                   </button>
                                   <span className="px-3 py-1 border border-gray-300 rounded-md text-gray-600">
-                                    {product.quantity}
+                                    {quantities[product.item_id]}
                                   </span>
                                   <button
                                     onClick={() =>
-                                      handlUpdateCart(
+                                      handleQuantityChange(
                                         product.item_id,
-                                        Math.min(10, product.quantity + 1)
+                                        quantities[product.item_id] + 1
                                       )
                                     }
                                     className="px-2 py-1 border border-gray-300 rounded-md text-gray-600 disabled:opacity-50"
-                                    disabled={product.quantity >= 10} // Prevent exceeding max limit
+                                    disabled={quantities[product.item_id] >= 10}
                                   >
                                     +
                                   </button>

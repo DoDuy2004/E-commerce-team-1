@@ -104,6 +104,8 @@ export const deleteItemCartAsync = createAsyncThunk(
         throw new Error(response.data.message || "Add to cart failed");
       }
 
+      dispatch(fetchCartQuantityAsync())
+
       return { item_id }; // Return payload for Redux
     } catch (error) {
       return rejectWithValue(
@@ -135,7 +137,7 @@ export const updateItemQuantityCartAsync = createAsyncThunk(
   }
 );
 
-const cartSlice = createSlice({
+export const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [], // Store cart items
@@ -144,14 +146,19 @@ const cartSlice = createSlice({
     error: null,
   },
   reducers: {
-    removeFromCart: (state, action) => {
-      const itemIndex = state.items.findIndex(
-        (i) => i.variantId === action.payload
-      );
-      if (itemIndex !== -1) {
-        state.totalQuantity -= state.items[itemIndex].quantity;
-        state.items.splice(itemIndex, 1);
+    addItemLocally: (state, action) => {
+      const { variantId, quantity } = action.payload;
+      const item = state.items.find((i) => i.variantId === variantId);
+  
+      if (item) {
+        item.quantity += quantity;
+      } else {
+        state.items.push({ variantId, quantity });
       }
+      state.totalQuantity += quantity;
+    },
+    removeItemLocally: (state, action) => {
+      state.items = state.items.filter(item => item.variantId !== action.payload);
     },
     clearCart: (state) => {
       state.items = [];
@@ -249,5 +256,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { removeFromCart, clearCart, resetCartState } = cartSlice.actions;
+export const { removeFromCart, clearCart, resetCartState, addItemLocally } = cartSlice.actions;
 export default cartSlice.reducer;

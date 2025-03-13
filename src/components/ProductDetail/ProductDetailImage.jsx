@@ -11,25 +11,39 @@ import ModelSizeInfo from "../common/ModelSizeInfo";
 //   "https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-04-image-card-03.jpg",
 // ];
 
-export const ProductDetailImage = ({ images, variants, selectedAttributes, selectedVariant}) => {
+export const ProductDetailImage = ({
+  images,
+  variants,
+  selectedAttributes,
+  selectedVariant,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [zoom, setZoom] = useState(false);
   // console.log(images)
   // console.log(product)
   // console.log(variants)
-  console.log(selectedAttributes)
+  // console.log(selectedAttributes)
   // console.log(selectedVariant)
 
-  const getMatchedVariant = () => {
-    return variants.find((variant) =>
+  const getMatchedVariantImageIndex = () => {
+    const matchedVariant = variants.find((variant) =>
       Object.entries(selectedAttributes).every(([type, value]) =>
-        variant.attributes.some(attr => attr.type === type && attr.value === value)
+        variant.attributes.some(
+          (attr) => attr.type === type && attr.value === value
+        )
       )
     );
+
+    if (!matchedVariant) return -1; // If no match found, return -1
+
+    return images.findIndex((img) => img === matchedVariant.images);
   };
-  
-  const matchedVariant = getMatchedVariant();
+
+  const matchedImageIndex = getMatchedVariantImageIndex();
+  const displayIndex =
+    matchedImageIndex !== -1 ? matchedImageIndex : currentIndex;
+
   // console.log("Matched Variant:", matchedVariant.images);
 
   const prevImage = () => currentIndex > 0 && setCurrentIndex(currentIndex - 1);
@@ -38,8 +52,6 @@ export const ProductDetailImage = ({ images, variants, selectedAttributes, selec
   const openFullScreen = () => setIsFullScreen(true);
   const closeFullScreen = () => setIsFullScreen(false);
   const toggleZoom = () => setZoom(!zoom);
-
-  console.log(currentIndex)
 
   return (
     <div className="flex flex-col-reverse sm:flex-row lg:flex-row justify-center items-start gap-4 p-4">
@@ -61,7 +73,12 @@ export const ProductDetailImage = ({ images, variants, selectedAttributes, selec
       {/* Main Image */}
       <div className="relative w-full max-w-[700px] sm:w-[700px] h-auto flex items-center justify-center overflow-hidden">
         <img
-          src={Object.keys(selectedAttributes).length > 0 ? matchedVariant.images : images[currentIndex]}
+          src={
+            Object.keys(selectedAttributes).length > 0 &&
+            matchedImageIndex !== -1
+              ? images[matchedImageIndex]
+              : images[currentIndex]
+          }
           alt="Product"
           className={`w-full h-auto max-h-[500px] object-contain cursor-zoom-in transition-transform bg-gray-100 duration-300 ${
             zoom ? "scale-150" : "scale-100"
@@ -102,7 +119,12 @@ export const ProductDetailImage = ({ images, variants, selectedAttributes, selec
       {/* Full-Screen Gallery */}
       {isFullScreen && (
         <FullScreenGallery
-          currentIndexs={currentIndex}
+          currentIndexs={
+            Object.keys(selectedAttributes).length > 0 &&
+            matchedImageIndex !== -1
+              ? matchedImageIndex
+              : currentIndex
+          }
           onClose={closeFullScreen}
           images={images}
         />

@@ -88,7 +88,7 @@ export const addToWishlistAsync = createAsyncThunk(
     } catch (error) {
       console.error("Wishlist error:", error);
       return rejectWithValue(
-        error.response?.data?.message || "Failed to add to wishlist"
+        error.status || "Failed to add to wishlist"
       );
     }
   }

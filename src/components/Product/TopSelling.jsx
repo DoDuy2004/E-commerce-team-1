@@ -10,11 +10,11 @@ export const TopSelling = () => {
 
   const fetchTopSelling = async () => {
     const data = await getTopSellingProduct();
-    setProductList(data)
-  }
+    setProductList(data);
+  };
 
   useEffect(() => {
-    fetchTopSelling()
+    fetchTopSelling();
   }, []);
 
   if (productList.length === 0) {
@@ -32,7 +32,7 @@ export const TopSelling = () => {
           <img
             src={productList[0].thumbnail}
             alt={productList[0].name}
-            className="w-full h-auto md:h-[450px] object-cover rounded-lg"
+            className="w-full h-auto md:h-[500px] object-cover rounded-lg"
           />
         </div>
         <div className="md:basis-1/3 md:ml-6 text-center md:text-left">
@@ -45,12 +45,22 @@ export const TopSelling = () => {
             industry.
           </p>
           <div className="flex items-center justify-center md:justify-start space-x-4 mt-4">
-            <span className="text-gray-400 line-through text-lg">
-              ${productList[0].original_price}
-            </span>
-            <span className="text-lg font-bold text-gray-800">
-              ${productList[0].selling_price}
-            </span>
+            {productList[0].original_price === productList[0].selling_price ? (
+              <>
+                <span className="text-lg font-bold text-gray-800">
+                  ${productList[0].selling_price}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-gray-400 line-through text-lg">
+                  ${productList[0].original_price}
+                </span>
+                <span className="text-lg font-bold text-gray-800">
+                  ${productList[0].selling_price}
+                </span>
+              </>
+            )}
           </div>
           <div className="flex justify-center items-center">
             <Button
@@ -59,7 +69,7 @@ export const TopSelling = () => {
               icon={<FaShoppingBag className="mr-2" />}
               clickEvent={(e) => {
                 e.stopPropagation();
-                nav(`/product-detail/${productList[0]._id}`)
+                nav(`/product-detail/${productList[0]._id}`);
               }}
             />
           </div>
@@ -74,7 +84,9 @@ export const TopSelling = () => {
             onClick={() => nav(`/product-detail/${product._id}`)}
           >
             <div className="text-left">
-              <p className="text-gray-700 text-2xl font-bold ">{product.name}</p>
+              <p className="text-gray-700 text-2xl font-bold ">
+                {product.name}
+              </p>
               <span className="text-gray-900 font-bold">
                 ${product.selling_price}
               </span>

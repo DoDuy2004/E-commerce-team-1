@@ -29,17 +29,26 @@ export const ProductDetailInfo = ({
   // const cartLoading = useSelector((state) => state.cart.loading);
 
   const handleAddToWishList = async (productId) => {
-    dispatch(addToWishlistAsync({ productId, status: !liked }))
-      .unwrap()
-      .then(() => {
-        setLiked(!liked);
-        toast.success(!liked ? "Added to Wishlist!" : "Removed from Wishlist!");
-      })
-      .catch((err) => {
-        console.error("Add To Wish List Failed: ", err);
-        toast.error(err);
-      });
-  };
+      const newLiked = !liked; 
+      setLiked(newLiked); 
+  
+      dispatch(addToWishlistAsync({ productId, status: newLiked }))
+        .unwrap()
+        .then(() => {
+        })
+        .catch((err) => {
+          console.error("Add To Wish List Failed: ", err);
+  
+          if (err === 400) {
+            toast.error("Please login!!!");
+            nav("/login");
+          } else {
+            toast.error(err);
+          }
+  
+          setLiked(!newLiked); 
+        });
+    };
 
   const handleAttributeSelect = (type, value) => {
     const newSelectedAttributes = { ...selectedAttributes };

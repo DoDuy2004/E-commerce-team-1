@@ -35,11 +35,8 @@ export const Home = () => {
     <div>
       <Toaster position="top-center" reverseOrder={false} />
 
-      <Banner />
-      <TopCategories title={"Our Top Categories"} />
-
       {loading ? (
-        <div className="flex justify-center items-center h-40">
+        <div className="flex justify-center items-center my-50">
           <SkeletonLoader />{" "}
           {/* ✅ Show circular loader while waiting for API */}
         </div>
@@ -49,23 +46,25 @@ export const Home = () => {
         </div>
       ) : (
         <>
+          <Banner />
+          <TopCategories title={"Our Top Categories"} />
           <ListProduct
             title={"Popular Products 2023"}
             productList={popularProduct}
           />
           <ListProduct title={"Furniture Collection"} productList={furniture} />
           <ListProduct title={"New Shoes Collection"} productList={newShoes} />
+
+          <div className="flex justify-center items-center my-20">
+            <Button
+              style={"bg-black text-white px-5 py-3 rounded-3xl cursor-pointer"}
+              content={"See more product"}
+              clickEvent={navigate}
+            />
+          </div>
+          <TopSelling />
         </>
       )}
-
-      <div className="flex justify-center items-center my-20">
-        <Button
-          style={"bg-black text-white px-5 py-3 rounded-3xl cursor-pointer"}
-          content={"See more product"}
-          clickEvent={navigate}
-        />
-      </div>
-      <TopSelling />
     </div>
   );
 };
