@@ -17,7 +17,7 @@ import { Toaster } from "react-hot-toast";
 export const ProductDetail = () => {
   const [productData, setProductData] = useState(null);
   const [categoryId, setCategoryId] = useState(null);
-  const [shopId, setShopId] = useState(null)
+  const [shopId, setShopId] = useState(null);
   const [selectedAttributes, setSelectedAttributes] = useState({}); // Thuộc tính đã chọn
   const [selectedVariant, setSelectedVariant] = useState(null); // Biến thể được chọn
   const [attributes, setAttributes] = useState([]); // Danh sách thuộc tính
@@ -91,6 +91,9 @@ export const ProductDetail = () => {
           )
         )
       );
+
+      console.log(compatibleVariants);
+
       if (compatibleVariants.length === 1) {
         setSelectedVariant(compatibleVariants[0]);
       } else {
@@ -109,7 +112,7 @@ export const ProductDetail = () => {
   useEffect(() => {
     if (product) {
       setCategoryId(product.productData?.category_id);
-      setShopId(product.productData?.shop_id?._id)
+      setShopId(product.productData?.shop_id?._id);
       // console.log(shopId)
     }
   }, [product]);
@@ -160,7 +163,7 @@ export const ProductDetail = () => {
             }}
           ></p>
         </div>
-        <SellerProfile shopId={shopId}/>
+        <SellerProfile shopId={shopId} />
         <ListProduct title={"Related Product"} productList={relatedProduct} />
         <AsSeenOn />
       </div>

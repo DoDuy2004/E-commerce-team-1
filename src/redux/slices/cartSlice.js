@@ -48,7 +48,7 @@ export const fetchCartListAsync = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(response);
+      // console.log(response);
 
       if (response.status !== 200) {
         throw new Error(
@@ -122,8 +122,6 @@ export const updateItemQuantityCartAsync = createAsyncThunk(
         { item_id: item_id, quantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      console.log(response);
 
       if (response.status !== 200) {
         throw new Error(response.data.message || "Update cart failed");

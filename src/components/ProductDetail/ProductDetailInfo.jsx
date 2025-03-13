@@ -40,31 +40,30 @@ export const ProductDetailInfo = ({
         toast.error(err);
       });
   };
-  // Xử lý chọn/bỏ chọn thuộc tính
 
   const handleAttributeSelect = (type, value) => {
     const newSelectedAttributes = { ...selectedAttributes };
     if (newSelectedAttributes[type] === value) {
-      delete newSelectedAttributes[type]; // Bỏ chọn nếu đã chọn
+      delete newSelectedAttributes[type];
     } else {
-      newSelectedAttributes[type] = value; // Chọn giá trị mới
+      newSelectedAttributes[type] = value;
     }
     onAttributesChange(newSelectedAttributes);
   };
 
-  // Tính toán các giá trị tương thích cho một thuộc tính
   const getCompatibleValues = (type) => {
     const otherSelected = { ...selectedAttributes };
-    delete otherSelected[type]; // Loại bỏ thuộc tính hiện tại để kiểm tra
+    delete otherSelected[type];
 
-    // Lọc ra các biến thể (variants) mà vẫn thỏa mãn các thuộc tính đã chọn trước đó
+    // Lọc ra variant phù hợp để xử lý khi chọn attribute (không phù hợp disable attribute)
     const compatibleVariants = variants.filter((v) =>
       Object.entries(otherSelected).every(([t, val]) =>
         v.attributes.some((attr) => attr.type === t && attr.value === val)
       )
     );
+    // console.log(compatibleVariants);
 
-    // Lấy tất cả các giá trị thuộc tính của `type` từ các biến thể phù hợp
+    // Lấy ra attribute và nhóm bằng Set để k trùng
     const compatibleValues = new Set(
       compatibleVariants.flatMap((v) =>
         v.attributes
@@ -72,6 +71,7 @@ export const ProductDetailInfo = ({
           .map((attr) => attr.value)
       )
     );
+    // console.log(compatibleValues);
     return compatibleValues;
   };
 
