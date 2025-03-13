@@ -65,12 +65,14 @@ export const ProductDetailInfo = ({
     const otherSelected = { ...selectedAttributes };
     delete otherSelected[type]; // Loại bỏ thuộc tính hiện tại để kiểm tra
 
+    // Lọc ra các biến thể (variants) mà vẫn thỏa mãn các thuộc tính đã chọn trước đó
     const compatibleVariants = variants.filter((v) =>
       Object.entries(otherSelected).every(([t, val]) =>
         v.attributes.some((attr) => attr.type === t && attr.value === val)
       )
     );
 
+    // Lấy tất cả các giá trị thuộc tính của `type` từ các biến thể phù hợp
     const compatibleValues = new Set(
       compatibleVariants.flatMap((v) =>
         v.attributes
@@ -82,14 +84,14 @@ export const ProductDetailInfo = ({
   };
 
   // console.log(selectedVariant);
-  console.log(product);
+  // console.log(product);
 
-  const handleAddToCart = async (variantId) => {
+  const handleAddToCart = async (variantId, quantity) => {
     setIsSelected(true);
     if (!variantId) {
       return;
     }
-    dispatch(addToCartAsync({ variantId, quantity: 1 }))
+    dispatch(addToCartAsync({ variantId, quantity }))
       .unwrap()
       .then(() => {
         toast.success("Added to cart!");
@@ -150,7 +152,7 @@ export const ProductDetailInfo = ({
             {attribute.values.map((value, index) => {
               const isSelected = selectedAttributes[attribute.type] === value;
               const compatibleValues = getCompatibleValues(attribute.type);
-              const isCompatible = compatibleValues.has(value);
+              const isCompatible = compatibleValues.has(value); // Kiểm tra giá trị có có thuộc attribute không
 
               return (
                 <li

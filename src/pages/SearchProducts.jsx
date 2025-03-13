@@ -19,7 +19,7 @@ const SearchProducts = () => {
     };
 
     fetchProducts();
-  }, [keyword]);
+  }, [keyword, categoryID]);
 
   console.log(products);
   return (
